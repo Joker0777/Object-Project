@@ -34,6 +34,17 @@ public class WeaponSystem : UnitSystems, IWeapon
     private CooldownTimer _primaryCooldownTimer;
     private CooldownTimer _secondaryCooldownTimer;
 
+    
+    public float PrimaryWeaponCooldown
+    {
+        get { return _primaryWeaponCooldown;}
+        set 
+        { 
+            _primaryWeaponCooldown = value;
+            _primaryCooldownTimer.TimerDuration = value;
+        }
+    }
+
     public void Start()
     {
         _primaryCooldownTimer = new CooldownTimer(_primaryWeaponCooldown);

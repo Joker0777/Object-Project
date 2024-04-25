@@ -19,7 +19,7 @@ public class Projectile : MonoBehaviour
         {
             collision.collider.attachedRigidbody.GetComponent<IDamagable>().DamageTaken(_projectileDamage);
         }
-        Destroy(this.gameObject);
+        this.gameObject.SetActive(false);
     }
 
  
