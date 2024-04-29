@@ -23,14 +23,15 @@ public class EnemyBehaviourSystem : UnitSystems
     protected Vector2 moveInput;
     private Vector2 directionToCurrentTarget;
 
-    void Start()
+    protected override void Awake()
     {
+        base.Awake();
         movement = GetComponentInChildren<IMovable>();
         weapon = GetComponentInChildren<IWeapon>();
 
         _targetRadiusCollider = GetComponent<CircleCollider2D>();
 
-        if (movement == null) 
+        if (movement == null)
         {
             Debug.Log("Movment not assigned or does not implement IMovable");
         }
@@ -42,13 +43,15 @@ public class EnemyBehaviourSystem : UnitSystems
 
 
         _targetRadiusCollider.radius = _detectRange;
-        
+
         _currentState = EnemyState.Patrol;
 
         moveInput = Vector2.zero;
 
         directionToCurrentTarget = Vector2.zero;
     }
+
+   
 
 
     void Update()

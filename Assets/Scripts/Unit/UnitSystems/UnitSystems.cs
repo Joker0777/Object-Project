@@ -8,10 +8,10 @@ public abstract class UnitSystems : MonoBehaviour
 
     protected virtual void Awake()
     {
-        unit = transform.root.GetComponent<Unit>();
-        if (unit == null)
+        if (!transform.root.TryGetComponent<Unit>(out unit))
         {
             Debug.Log("Unit not assigned to parent.");
         }
-    }  
+    }
+
 }

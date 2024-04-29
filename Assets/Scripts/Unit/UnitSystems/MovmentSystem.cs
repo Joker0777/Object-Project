@@ -8,6 +8,7 @@ public class MovmentSystem : UnitSystems, IMovable
     [SerializeField] protected float _turnSpeed = 0.1f;
     [SerializeField] protected float _speed = 1f;
 
+
     protected float _verticalInput;
 
     protected float _angleToTurn;
@@ -15,11 +16,19 @@ public class MovmentSystem : UnitSystems, IMovable
 
     protected Rigidbody2D _rigidbody2D;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+    }
 
     private void Start()
     {
         _rigidbody2D = unit.GetComponent<Rigidbody2D>();
     }
+
+
+
 
     protected virtual void FixedUpdate()
     {

@@ -29,7 +29,7 @@ public class WeaponSystem : UnitSystems, IWeapon
 
     private Weapon _currentPrimaryWeapon;
     private int _currentWeaponIndex = 0;
-    private int _secondaryWeaponAmmo = 0;
+    private int _secondaryWeaponAmmo = 1;
 
     private CooldownTimer _primaryCooldownTimer;
     private CooldownTimer _secondaryCooldownTimer;
@@ -55,6 +55,8 @@ public class WeaponSystem : UnitSystems, IWeapon
         {
            _currentPrimaryWeapon = primaryWeaponList[_currentWeaponIndex];      
         }
+
+        secondaryWeapon = _secondaryPrefab;
     }
 
     private void Update()
@@ -102,7 +104,8 @@ public class WeaponSystem : UnitSystems, IWeapon
 
     public void FireSecondary() 
     {
-        if (_secondaryCooldownTimer.IsRunning() || _secondaryWeaponAmmo <= 0) return;
+       // if (_secondaryCooldownTimer.IsRunning() || _secondaryWeaponAmmo <= 0) return;
+        if (_secondaryCooldownTimer.IsRunning()) return;
 
         if (secondaryWeapon != null) 
         {
@@ -110,6 +113,7 @@ public class WeaponSystem : UnitSystems, IWeapon
                                         _weaponTarget, unit);
             _secondaryCooldownTimer.StartTimer();
             _secondaryWeaponAmmo--;
+            Debug.Log("Secondary Ammo " + _secondaryWeaponAmmo);
         }    
     }
 

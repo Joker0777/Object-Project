@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5949482889828728261}
   - component: {fileID: 9052003561978576212}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MovementSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5710585020980900211}
   - component: {fileID: 8090347576872410084}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WeaponSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 6787933701193844321}
   - component: {fileID: 4935735163135478589}
   - component: {fileID: 4564852035914374035}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MachineGun
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -280,6 +280,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthTest: 0
+  _eventManager: {fileID: 11400000, guid: 6f0d08b5f7be8d54dad5545687e67d16, type: 2}
+  _unitType: 2
   _maxHealth: 100
 --- !u!60 &4564852035914374035
 PolygonCollider2D:
@@ -317,7 +319,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.64, y: 0.64}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 1, y: 0.8828125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -345,7 +347,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8109475797563974539}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PrimaryWeaponSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}

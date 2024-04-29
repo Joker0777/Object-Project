@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class CoroutineManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    private static CoroutineManager _instance;
+
+    public static CoroutineManager Instance
     {
-        
+        get
+        {
+            if (_instance == null)
+            {
+                GameObject coroutineManager = new GameObject("CoroutineManager");
+                _instance = coroutineManager.AddComponent<CoroutineManager>();
+            }
+            return _instance;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Coroutine(IEnumerator coroutine)
     {
-        
+        StartCoroutine(coroutine);
     }
 }
+

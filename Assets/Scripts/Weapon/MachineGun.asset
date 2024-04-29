@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36a423f504eb5f047aabbc2f71d8b881, type: 3}
   m_Name: MachineGun
   m_EditorClassIdentifier: 
-  _projectilePrefab: {fileID: 4537214870467690492, guid: bd72665b33f1ccb4185d601d438dfeb0, type: 3}
+  _projectilePrefab: {fileID: 4537214870467690492, guid: 7a057e106e6fff64d8959f7abb4f0944, type: 3}
   _weaponSpeed: 20
   _weaponDamage: 10
   _targetTag: Player
+  _poolSize: 10
+  _projectilePoolTag: MachineGun
   _accuracy: 0.472

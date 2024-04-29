@@ -16,4 +16,6 @@ MonoBehaviour:
   _weaponSpeed: 50
   _weaponDamage: 20
   _targetTag: Enemy
+  _poolSize: 10
+  _projectilePoolTag: Sniper
   _accuracy: 1

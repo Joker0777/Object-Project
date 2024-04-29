@@ -6,31 +6,37 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     
-    [SerializeField] private Unit[] enemyPrefabs;
+    [SerializeField] private Unit[] enemyUnits;
     [SerializeField] private float _spawnDistance = 8f;
     [SerializeField] private float _spawnDelay = 5f;
 
     [SerializeField] private float _asteroidPrefabs;
     [SerializeField] private float _spawnAngle;
 
+    [SerializeField] private int _enemyPoolSize = 10;
+
+    private Unit _nextUnit;
+
     private void Awake()
     {
         Instance = this;
+
+       // foreach (var enemy in enemyUnits)
+        //{
+        //    ObjectPoolSystem.Instance.AddPool(_enemyPoolSize, enemy.UnitType.ToString(), enemy, this.transform);
+      //  }
     }
 
     private void Start()
     {
+
+
+
         StartCoroutine(SpawnEnemy());
     }
 
 
 
-    private void Update()
-    {
-        
-    }
-
-    // Update is called once per frame
     IEnumerator SpawnEnemy()
     {
         while (true)
@@ -41,9 +47,17 @@ public class GameManager : MonoBehaviour
 
             Vector2 spawnPoint = new Vector2(transform.position.x, transform.position.y) + randomPosition;
 
-            int prefeabIndex = Random.Range(0, enemyPrefabs.Length - 1);
+            int enemyIndex = Random.Range(0, enemyUnits.Length - 1);
 
-            Instantiate(enemyPrefabs[prefeabIndex], spawnPoint, Quaternion.identity);
+           // _nextUnit = ObjectPoolSystem.Instance.GetObject(enemyUnits[enemyIndex].UnitType.ToString());
+
+           // _nextUnit.transform.SetPositionAndRotation(spawnPoint, Quaternion.identity);
+
+
+
+            Instantiate(enemyUnits[enemyIndex], spawnPoint, Quaternion.identity);
+
+
         }
     }
 }

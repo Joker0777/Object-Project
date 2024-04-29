@@ -11,6 +11,7 @@ public class BalisticWeapon : Weapon
     [SerializeField] protected int _weaponDamage;
     [SerializeField] protected string _targetTag;
     [SerializeField] protected int _poolSize = 10;
+    [SerializeField] protected string _projectilePoolTag;
 
     [Range(0f, 1f)]
     [SerializeField] protected float _accuracy;
@@ -20,16 +21,18 @@ public class BalisticWeapon : Weapon
 
     public override void ShootWeapon(Vector2 position, Vector2 direction, Quaternion rotation, string targetTag, Unit userUnit)
     {
-        _nextProjectile = ObjectPoolSystem<Projectile>.Instance.GetObject("Projectile");
+        _nextProjectile = ProjectilePoolSystem.Instance.GetObject(_projectilePoolTag);
 
-        if (_nextProjectile == null)
-        {    
-            ObjectPoolSystem<Projectile>.Instance.AddPool(_poolSize, "Projectile", _projectilePrefab, userUnit.transform);
-            _nextProjectile = ObjectPoolSystem<Projectile>.Instance.GetObject("Projectile");
+         if (_nextProjectile == null)
+         {
+            ProjectilePoolSystem.Instance.AddPool(_poolSize, _projectilePoolTag, _projectilePrefab, userUnit.transform);
+            _nextProjectile = ProjectilePoolSystem.Instance.GetObject(_projectilePoolTag);
         }
- 
-        _nextProjectile.transform.position = position;
-        _nextProjectile.transform.rotation = SetTrajectoryAngle(direction, rotation);
+
+         _nextProjectile.transform.position = position;
+         _nextProjectile.transform.rotation = SetTrajectoryAngle(direction, rotation);
+
+        //_nextProjectile = Instantiate(_projectilePrefab, position, rotation);
 
         _nextProjectile.SetupProjectile(_weaponDamage, _weaponSpeed, targetTag);
     }

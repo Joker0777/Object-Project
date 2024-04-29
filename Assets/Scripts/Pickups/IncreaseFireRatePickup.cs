@@ -7,44 +7,51 @@ public class IncreaseFireRatePickup : PickUp
     [SerializeField] private float _powerUpTimerLength = 10;
     [SerializeField] private float _fireRateIncreaseFactor = 5f;
     
-    private CooldownTimer _powerUpCooldownTimer;
+   // private CooldownTimer _powerUpCooldownTimer;
     private WeaponSystem weaponSystem;
 
     private bool _powerUpUsed;
     private float _currentCooldown;
 
 
-    void Start()
-    {
-        _powerUpCooldownTimer = new CooldownTimer(_powerUpTimerLength);
-    }
+   // void Start()
+  //  {
+     //   _powerUpCooldownTimer = new CooldownTimer(_powerUpTimerLength);
+  //  }
 
-    private void Update()
-    {
-        if (_powerUpCooldownTimer.IsRunning()) 
-        {
-            _powerUpCooldownTimer.UpdateTimer(Time.deltaTime);
-        }
-        else if (!_powerUpCooldownTimer.IsRunning() && _powerUpUsed)
-        {
-            weaponSystem.PrimaryWeaponCooldown = _currentCooldown;
-            Destroy(gameObject);
-        }    
-    }
+   // private void Update()
+  //  {
+    //    if (_powerUpCooldownTimer.IsRunning()) 
+    //    {
+   //         _powerUpCooldownTimer.UpdateTimer(Time.deltaTime);
+    //    }
+  //      else if (!_powerUpCooldownTimer.IsRunning() && _powerUpUsed)
+   //     {
+  //          weaponSystem.PrimaryWeaponCooldown = _currentCooldown;
+  //          Destroy(gameObject);
+  //      }    
+ //   }
 
     public override void CollectObject(Unit unit)
     {
-        weaponSystem = unit.GetComponentInChildren<WeaponSystem>();
+        if (_powerUpUsed || (weaponSystem = unit.GetComponentInChildren<WeaponSystem>()) == null)
+            return;
 
-        if (weaponSystem != null && !_powerUpUsed) 
-        {
-           
-            _currentCooldown = weaponSystem.PrimaryWeaponCooldown;
-            _powerUpCooldownTimer.StartTimer();
-            _powerUpUsed = true;
-            weaponSystem.PrimaryWeaponCooldown = _currentCooldown/_fireRateIncreaseFactor;
-        }
+        _powerUpUsed = true;
 
- 
+        _currentCooldown = weaponSystem.PrimaryWeaponCooldown;
+         
+        weaponSystem.PrimaryWeaponCooldown /=_fireRateIncreaseFactor;
+
+        CoroutineManager.Instance.Coroutine(PowerUpCoolDown(_currentCooldown, _powerUpTimerLength));
+
+        Destroy(gameObject);
+    }
+
+    IEnumerator PowerUpCoolDown(float currentCooldown,  float timerLength)
+    {
+        yield return new WaitForSeconds(timerLength);
+
+        weaponSystem.PrimaryWeaponCooldown = currentCooldown;
     }
 }

@@ -40,6 +40,15 @@ public class ObjectPool<T> where T : MonoBehaviour
         obj.gameObject.SetActive(false);
     }
 
+    public void DeactivateAll()
+    {
+        Debug.Log("In deactivate log for object " + _objectTag);
+        foreach (T obj in _objectPool)
+        {
+            obj.gameObject.SetActive(false);
+        }
+    }
+
     private void CreatePool()
     {
         _objectPool = new List<T>();
@@ -53,11 +62,14 @@ public class ObjectPool<T> where T : MonoBehaviour
     private T CreateObject(bool isActive)
     {
         T nextObject = Object.Instantiate(_object, _parentTransform);
-        nextObject.gameObject.SetActive(true);
+       // nextObject.gameObject.SetActive(true);
+   
         _objectPool.Add(nextObject);
         nextObject.gameObject.SetActive(isActive);
+
         return nextObject;
     }
+
 
 
 }
