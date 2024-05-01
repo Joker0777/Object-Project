@@ -13,7 +13,7 @@ public class WeaponSystem : UnitSystems, IWeapon
     Weapon primaryWeapon;
    
    
-    [SerializeField] Transform _primaryWeaponSpawnPoint;
+    [SerializeField] Transform[] _primaryWeaponSpawnPoints;
     [SerializeField] Transform _secondaryWeaponSpawnPoint;
 
     //starting weapons
@@ -29,10 +29,11 @@ public class WeaponSystem : UnitSystems, IWeapon
 
     private Weapon _currentPrimaryWeapon;
     private int _currentWeaponIndex = 0;
+    private int _primaryWeaponSpawnPointIndex;
     private int _secondaryWeaponAmmo = 1;
 
-    private CooldownTimer _primaryCooldownTimer;
-    private CooldownTimer _secondaryCooldownTimer;
+    private Timer _primaryCooldownTimer;
+    private Timer _secondaryCooldownTimer;
 
     
     public float PrimaryWeaponCooldown
@@ -47,8 +48,8 @@ public class WeaponSystem : UnitSystems, IWeapon
 
     public void Start()
     {
-        _primaryCooldownTimer = new CooldownTimer(_primaryWeaponCooldown);
-        _secondaryCooldownTimer = new CooldownTimer(_secondaryWeaponCooldown);
+        _primaryCooldownTimer = new Timer(this,_primaryWeaponCooldown);
+        _secondaryCooldownTimer = new Timer(this, _secondaryWeaponCooldown);
         
         primaryWeaponList.Add(_primaryWeapon);
         if (primaryWeaponList.Count != 0)
@@ -59,18 +60,18 @@ public class WeaponSystem : UnitSystems, IWeapon
         secondaryWeapon = _secondaryPrefab;
     }
 
-    private void Update()
-    {
-        if(_primaryCooldownTimer.IsRunning()) 
-        { 
-            _primaryCooldownTimer.UpdateTimer(Time.deltaTime);
-        }
+  //  private void Update()
+  //  {
+   //     if(_primaryCooldownTimer.IsRunning()) 
+    //    { 
+    //        _primaryCooldownTimer.UpdateTimer(Time.deltaTime);
+    //    }
 
-        if(_secondaryCooldownTimer.IsRunning()) 
-        { 
-            _secondaryCooldownTimer.UpdateTimer(Time.deltaTime);
-        }    
-    }
+     //   if(_secondaryCooldownTimer.IsRunning()) 
+    //    { 
+     //       _secondaryCooldownTimer.UpdateTimer(Time.deltaTime);
+     //   }    
+   // }
 
     public void AddPrimary(Weapon addedWeapon)
     {
@@ -90,14 +91,21 @@ public class WeaponSystem : UnitSystems, IWeapon
 
     public void FirePrimary()
     {
-        if (_primaryCooldownTimer.IsRunning()) return;
+        if (_primaryCooldownTimer.IsRunning) return;
     
         if (_currentPrimaryWeapon != null)
         {
-            Debug.Log("In Fire Primary");
+            // Debug.Log("In Fire Primary");
+        
+            _primaryWeaponSpawnPointIndex = (_primaryWeaponSpawnPointIndex +1) %_primaryWeaponSpawnPoints.Length;
            
-            _currentPrimaryWeapon.ShootWeapon(_primaryWeaponSpawnPoint.transform.position, _primaryWeaponSpawnPoint.transform.up, _primaryWeaponSpawnPoint.rotation,
-                                              _weaponTarget,unit);
+            Transform weaponSpawn = _primaryWeaponSpawnPoints[_primaryWeaponSpawnPointIndex];
+
+            _currentPrimaryWeapon.ShootWeapon(weaponSpawn.position, weaponSpawn.up,
+                                              weaponSpawn.rotation, _weaponTarget,unit);
+
+            Debug.Log(_primaryWeaponSpawnPointIndex);
+
             _primaryCooldownTimer.StartTimer();
         }
     }
@@ -105,7 +113,7 @@ public class WeaponSystem : UnitSystems, IWeapon
     public void FireSecondary() 
     {
        // if (_secondaryCooldownTimer.IsRunning() || _secondaryWeaponAmmo <= 0) return;
-        if (_secondaryCooldownTimer.IsRunning()) return;
+        if (_secondaryCooldownTimer.IsRunning) return;
 
         if (secondaryWeapon != null) 
         {

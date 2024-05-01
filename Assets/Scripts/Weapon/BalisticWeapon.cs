@@ -19,14 +19,18 @@ public class BalisticWeapon : Weapon
 
     protected Projectile _nextProjectile;
 
+
     public override void ShootWeapon(Vector2 position, Vector2 direction, Quaternion rotation, string targetTag, Unit userUnit)
     {
         _nextProjectile = ProjectilePoolSystem.Instance.GetObject(_projectilePoolTag);
+        Debug.Log("In Shoot Weapon. next projectile " + _nextProjectile);
 
          if (_nextProjectile == null)
          {
+
             ProjectilePoolSystem.Instance.AddPool(_poolSize, _projectilePoolTag, _projectilePrefab, userUnit.transform);
             _nextProjectile = ProjectilePoolSystem.Instance.GetObject(_projectilePoolTag);
+            Debug.Log("In Shoot Weapon after next projectile was null. next projectile " + _nextProjectile);
         }
 
          _nextProjectile.transform.position = position;

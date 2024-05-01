@@ -25,7 +25,7 @@ public class NukeWeapon : Weapon
         //    }
         // }
         Debug.Log("In Nuke Explode");
-            ProjectilePoolSystem.Instance.DeactivateObjects(_targetTag);
+        GameManager.Instance.DestoyAllEnemyUnits();
     }
     
 }

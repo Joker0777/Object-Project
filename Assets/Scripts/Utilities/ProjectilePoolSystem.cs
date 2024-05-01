@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class ProjectilePoolSystem
 {
-    private Dictionary<string, ObjectPool<Projectile>> _projectilePools;
+    private Dictionary<string, ObjectPool<Projectile>> _enemyPools;
 
     private static ProjectilePoolSystem _instance;
 
@@ -24,25 +22,24 @@ public class ProjectilePoolSystem
 
     public ProjectilePoolSystem()
     {
-        _projectilePools = new Dictionary<string, ObjectPool<Projectile>>();
+        _enemyPools = new Dictionary<string, ObjectPool<Projectile>>();
     }
 
     public void AddPool(int size, string name, Projectile projectile, Transform parent)
     {
-        if (projectile != null && !_projectilePools.ContainsKey(name))
+        if (projectile != null && !_enemyPools.ContainsKey(name))
         {
-            Debug.Log("In add pool for " + name);
-            _projectilePools.Add(name,new ObjectPool<Projectile>(projectile, size, parent, name));
+            _enemyPools.Add(name, new ObjectPool<Projectile>(projectile, size, parent, name));
         }
         return;
     }
 
     public void RemovePool(string name)
     {
-        if (_projectilePools.TryGetValue(name, out ObjectPool<Projectile> _))
-            {
-               _projectilePools.Remove(name);
-            }
+        if (_enemyPools.TryGetValue(name, out ObjectPool<Projectile> _))
+        {
+            _enemyPools.Remove(name);
+        }
         return;
     }
 
@@ -50,21 +47,23 @@ public class ProjectilePoolSystem
     {
         Projectile obj = null;
 
-        if (_projectilePools.TryGetValue(type, out ObjectPool<Projectile> value))
+        if (_enemyPools.TryGetValue(type, out ObjectPool<Projectile> value))
         {
             obj = value.GetObject();
+            Debug.Log("In get projectile obj " + obj);
         }
-      
+
 
         return obj;
     }
 
     public void DeactivateObjects(string type)
     {
-        if (_projectilePools.TryGetValue(type, out ObjectPool<Projectile> value))
+        if (_enemyPools.TryGetValue(type, out ObjectPool<Projectile> value))
         {
-           value.DeactivateAll();
+            value.DeactivateAll();
             Debug.Log("In Deactivate objects of type " + type);
         }
     }
+
 }

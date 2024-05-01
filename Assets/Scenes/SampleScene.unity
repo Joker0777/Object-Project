@@ -148,7 +148,7 @@ Transform:
   m_GameObject: {fileID: 407211808}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.81, z: 0}
+  m_LocalPosition: {x: -0.356, y: -0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -191,6 +191,7 @@ Transform:
   - {fileID: 1440368494}
   - {fileID: 1780784707}
   - {fileID: 407211809}
+  - {fileID: 1501676150}
   - {fileID: 1190669339}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -747,7 +748,6 @@ MonoBehaviour:
   _spawnDelay: 5
   _asteroidPrefabs: 0
   _spawnAngle: 0
-  _enemyPoolSize: 10
 --- !u!4 &1003758413
 Transform:
   m_ObjectHideFlags: 0
@@ -1076,6 +1076,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _turnSpeed: 3
   _speed: 3
+--- !u!1 &1501676149
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1501676150}
+  m_Layer: 0
+  m_Name: PrimaryWeaponsSpawn2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1501676150
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501676149}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.365, y: -0.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 430416258}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1673794778
 GameObject:
   m_ObjectHideFlags: 0
@@ -1188,14 +1219,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b65a197c6596104184cb0324464dd3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _primaryWeaponSpawnPoint: {fileID: 407211809}
+  _primaryWeaponSpawnPoints:
+  - {fileID: 407211809}
+  - {fileID: 1501676150}
   _secondaryWeaponSpawnPoint: {fileID: 1190669339}
   _primaryWeapon: {fileID: 11400000, guid: 76a50c0578f0ae94784297ec9ce7c389, type: 2}
   _secondaryPrefab: {fileID: 11400000, guid: 68b8660354799dc48923fb72c5688e18, type: 2}
-  _primaryWeaponCooldown: 2
+  _primaryWeaponCooldown: 0.5
   _secondaryWeaponCooldown: 2
   _weaponTarget: Enemy
   _maxSecondaryAmmo: 3
+--- !u!1001 &2074701753130742044
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3147112117122647895, guid: 5dfc3f117229b864b860df574e176fac, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.0727232
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147112117122647895, guid: 5dfc3f117229b864b860df574e176fac, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.382482
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147112117122647895, guid: 5dfc3f117229b864b860df574e176fac, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147112117122647895, guid: 5dfc3f117229b864b860df574e176fac, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147112117122647895, guid: 5dfc3f117229b864b860df574e176fac, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147112117122647895, guid: 5dfc3f117229b864b860df574e176fac, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147112117122647895, guid: 5dfc3f117229b864b860df574e176fac, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147112117122647895, guid: 5dfc3f117229b864b860df574e176fac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147112117122647895, guid: 5dfc3f117229b864b860df574e176fac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147112117122647895, guid: 5dfc3f117229b864b860df574e176fac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7712387941862189998, guid: 5dfc3f117229b864b860df574e176fac, type: 3}
+      propertyPath: m_Name
+      value: MachineGun
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5dfc3f117229b864b860df574e176fac, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1208,3 +1298,4 @@ SceneRoots:
   - {fileID: 901781304}
   - {fileID: 1407659581}
   - {fileID: 1003758413}
+  - {fileID: 2074701753130742044}

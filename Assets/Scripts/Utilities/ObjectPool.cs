@@ -10,6 +10,8 @@ public class ObjectPool<T> where T : MonoBehaviour
     private string _objectTag;
 
     public string PrefabTag {  get { return _objectTag; } }
+
+    public int CurrentPoolSize { get { return _objectPool.Count; } }
     
     public ObjectPool(T @object, int poolSize, Transform parentTransform, string tag)
     {
@@ -62,7 +64,7 @@ public class ObjectPool<T> where T : MonoBehaviour
     private T CreateObject(bool isActive)
     {
         T nextObject = Object.Instantiate(_object, _parentTransform);
-       // nextObject.gameObject.SetActive(true);
+        nextObject.gameObject.SetActive(true);
    
         _objectPool.Add(nextObject);
         nextObject.gameObject.SetActive(isActive);

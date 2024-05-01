@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _projectilePrefab: {fileID: 4537214870467690492, guid: 7a057e106e6fff64d8959f7abb4f0944, type: 3}
   _weaponSpeed: 20
-  _weaponDamage: 10
+  _weaponDamage: 1
   _targetTag: Player
   _poolSize: 10
   _projectilePoolTag: MachineGun

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3964610073457128106
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6752764119702187964}
+  m_Layer: 6
+  m_Name: PrimaryWeaponSpawn2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6752764119702187964
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3964610073457128106}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.3, y: 0.43, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3147112117122647895}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7230390872931801521
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,11 +121,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b65a197c6596104184cb0324464dd3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _primaryWeaponSpawnPoint: {fileID: 8109475797563974539}
-  _secondaryWeaponSpawnPoint: {fileID: 8109475797563974539}
+  _primaryWeaponSpawnPoints:
+  - {fileID: 8109475797563974539}
+  - {fileID: 6752764119702187964}
+  _secondaryWeaponSpawnPoint: {fileID: 0}
   _primaryWeapon: {fileID: 11400000, guid: e78ea2729f2d4d94ca3a04b51a5b9a51, type: 2}
   _secondaryPrefab: {fileID: 0}
-  _primaryWeaponCooldown: 0.5
+  _primaryWeaponCooldown: 0.1
   _secondaryWeaponCooldown: 3
   _weaponTarget: Player
   _maxSecondaryAmmo: 3
@@ -112,7 +145,7 @@ GameObject:
   - component: {fileID: 5586700685515999371}
   - component: {fileID: 6787933701193844321}
   - component: {fileID: 4935735163135478589}
-  - component: {fileID: 4564852035914374035}
+  - component: {fileID: 616166768605190258}
   m_Layer: 6
   m_Name: MachineGun
   m_TagString: Enemy
@@ -136,6 +169,7 @@ Transform:
   - {fileID: 5949482889828728261}
   - {fileID: 5710585020980900211}
   - {fileID: 8109475797563974539}
+  - {fileID: 6752764119702187964}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3819127962506061680
@@ -283,7 +317,7 @@ MonoBehaviour:
   _eventManager: {fileID: 11400000, guid: 6f0d08b5f7be8d54dad5545687e67d16, type: 2}
   _unitType: 2
   _maxHealth: 100
---- !u!60 &4564852035914374035
+--- !u!60 &616166768605190258
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -327,16 +361,20 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.19999999, y: 0.28}
-      - {x: -0.24, y: 0.28}
-      - {x: -0.32, y: 0.17}
-      - {x: -0.32, y: -0.14999999}
-      - {x: -0.31, y: -0.22}
-      - {x: -0.17999999, y: -0.28}
-      - {x: 0.21, y: -0.28}
-      - {x: 0.32, y: -0.17}
-      - {x: 0.32, y: 0.19}
-      - {x: 0.31, y: 0.22}
+    - - {x: 0.2952733, y: 0.42457986}
+      - {x: 0.15678453, y: 0.23852754}
+      - {x: -0.1459024, y: 0.23146224}
+      - {x: -0.3060925, y: 0.42027318}
+      - {x: -0.5172272, y: 0.12781}
+      - {x: -0.4913864, y: -0.14393425}
+      - {x: -0.4326942, y: -0.26622915}
+      - {x: -0.28125, y: -0.42457986}
+      - {x: -0.21987867, y: -0.31419778}
+      - {x: 0.19893432, y: -0.30829883}
+      - {x: 0.27213788, y: -0.4245801}
+      - {x: 0.51722693, y: -0.13642359}
+      - {x: 0.4913864, y: 0.18920708}
+      - {x: 0.48868155, y: 0.18440151}
   m_UseDelaunayMesh: 0
 --- !u!1 &8932143471633616653
 GameObject:
@@ -348,7 +386,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8109475797563974539}
   m_Layer: 6
-  m_Name: PrimaryWeaponSpawn
+  m_Name: PrimaryWeaponSpawn1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -363,7 +401,7 @@ Transform:
   m_GameObject: {fileID: 8932143471633616653}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.184, y: 0.347, z: 0}
+  m_LocalPosition: {x: -0.3, y: 0.43, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

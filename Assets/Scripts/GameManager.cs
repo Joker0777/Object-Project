@@ -13,7 +13,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float _asteroidPrefabs;
     [SerializeField] private float _spawnAngle;
 
-    [SerializeField] private int _enemyPoolSize = 10;
+    //[SerializeField] private int _enemyPoolSize = 10;
+
+    private List<GameObject> _enemyUnits;
 
     private Unit _nextUnit;
 
@@ -29,10 +31,20 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+      //  StartCoroutine(SpawnEnemy());
+        _enemyUnits = new List<GameObject> ();
+    }
 
-
-
-        StartCoroutine(SpawnEnemy());
+    public void DestoyAllEnemyUnits()
+    {
+        foreach (GameObject unit in _enemyUnits)
+        {
+            if (unit != null) 
+            { 
+                Destroy(unit.gameObject);
+            }
+        }
+        _enemyUnits.Clear();
     }
 
 
@@ -55,9 +67,8 @@ public class GameManager : MonoBehaviour
 
 
 
-            Instantiate(enemyUnits[enemyIndex], spawnPoint, Quaternion.identity);
-
-
+           Unit newShip = Instantiate(enemyUnits[enemyIndex], spawnPoint, Quaternion.identity);
+          _enemyUnits.Add(newShip.gameObject);
         }
     }
 }

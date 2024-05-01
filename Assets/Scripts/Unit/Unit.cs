@@ -59,20 +59,4 @@ public class Unit : MonoBehaviour, IDamagable
         Destroy(gameObject);
     }
 
-    private void OnEnable()
-    {
-        InitializeSystems(this);
-    }
-
-    public void InitializeSystems(Unit parent)
-    {
-
-        IInitialize[] initialize = GetComponentsInChildren<IInitialize>();
-
-        foreach (IInitialize init in initialize) 
-        { 
-            init?.InitializeSystem(parent);
-        }
-    }
-
 }
