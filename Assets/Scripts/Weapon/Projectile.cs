@@ -13,13 +13,27 @@ public class Projectile : MonoBehaviour
     private Timer _projectileTimer;
     private bool _fired;
 
+    private Rigidbody2D rb;
+
+
+
+    private void Awake()
+    {
+        _projectileTimer = new Timer(_projectileTimerLength);
+
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+
     protected virtual void Update()
     {
-        transform.Translate(Vector3.up * _projectileSpeed * Time.deltaTime);
+     //   transform.Translate(Vector3.up * _projectileSpeed * Time.deltaTime);
 
         if (_fired)
         {
-            if (!_projectileTimer.IsRunning)
+            _projectileTimer.UpdateTimerBasic(Time.deltaTime);
+            
+            if (!_projectileTimer.IsRunningBasic())
             {
                 _fired = false;
                 this.gameObject.SetActive(false);
@@ -27,25 +41,13 @@ public class Projectile : MonoBehaviour
           
         }    
     }
-    private void Awake()
+
+    private void ShootProjectile()
     {
-        _projectileTimer = new Timer(this, _projectileTimerLength);
+        rb.AddForce(transform.up * _projectileSpeed);
     }
 
-    //  private void Start()
-    //  {
-    //      SetUpTimer();
-    // }
 
-    //  private void OnEnable()
-    //  {
-    //      SetUpTimer();      
-    // }
-
-    private void SetUpTimer()
-    {
-
-    }
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {     
         if (collision.gameObject.CompareTag(_targetTag))
@@ -63,8 +65,10 @@ public class Projectile : MonoBehaviour
         _targetTag = targetTag;
 
         _projectileTimer.TimerDuration = _projectileTimerLength;
-        _projectileTimer.StartTimer();
+        _projectileTimer.StartTimerBasic();
+
+        ShootProjectile();
+
         _fired = true;
-        Debug.Log("In setup projectile.");
     }
 }

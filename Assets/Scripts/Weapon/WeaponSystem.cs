@@ -4,126 +4,91 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class WeaponSystem : UnitSystems, IWeapon 
+public class WeaponSystem : UnitSystems 
 {
- 
-    private List<Weapon> primaryWeaponList = new List<Weapon>();
+
+
+
+
+    protected List<Weapon> primaryWeaponList = new List<Weapon>();
     
-    Weapon secondaryWeapon;
-    Weapon primaryWeapon;
+
+    protected Weapon primaryWeapon;
    
    
-    [SerializeField] Transform[] _primaryWeaponSpawnPoints;
-    [SerializeField] Transform _secondaryWeaponSpawnPoint;
+    [SerializeField]protected WeaponSpawnPoint[] _weaponSpawnPoints;
+
+    [SerializeField] protected Transform _projectileParent;
 
     //starting weapons
-    [SerializeField] Weapon _primaryWeapon;//set the default weapon
-    [SerializeField] Weapon _secondaryPrefab;//set the secondary weapon
+    [SerializeField] protected Weapon _primaryWeapon;//set the default weapon
+
 
     //weapon cool down timer length
     [SerializeField]protected float _primaryWeaponCooldown;
-    [SerializeField]protected float _secondaryWeaponCooldown;
+
     
     [SerializeField]protected string _weaponTarget;
-    [SerializeField] protected int _maxSecondaryAmmo = 3;
 
-    private Weapon _currentPrimaryWeapon;
-    private int _currentWeaponIndex = 0;
-    private int _primaryWeaponSpawnPointIndex;
-    private int _secondaryWeaponAmmo = 1;
 
-    private Timer _primaryCooldownTimer;
-    private Timer _secondaryCooldownTimer;
+    protected Weapon _currentPrimaryWeapon;
+    protected Transform[] _primaryWeaponSpawnPoints;
+    protected int _currentWeaponIndex = 0;
+    protected int _primaryWeaponSpawnPointIndex;
 
-    
-    public float PrimaryWeaponCooldown
+
+    protected Timer _primaryCooldownTimer;
+
+
+
+
+    protected override void Start()
     {
-        get { return _primaryWeaponCooldown;}
-        set 
-        { 
-            _primaryWeaponCooldown = value;
-            _primaryCooldownTimer.TimerDuration = value;
-        }
-    }
+        base.Start();
+        _primaryCooldownTimer = new Timer(_primaryWeaponCooldown);
 
-    public void Start()
-    {
-        _primaryCooldownTimer = new Timer(this,_primaryWeaponCooldown);
-        _secondaryCooldownTimer = new Timer(this, _secondaryWeaponCooldown);
         
         primaryWeaponList.Add(_primaryWeapon);
         if (primaryWeaponList.Count != 0)
         {
-           _currentPrimaryWeapon = primaryWeaponList[_currentWeaponIndex];      
+           _currentPrimaryWeapon = primaryWeaponList[_currentWeaponIndex];
+
+           _eventManager.OnUIChange?.Invoke(UIElementType.WeaponUI, _primaryWeapon.name);
         }
 
-        secondaryWeapon = _secondaryPrefab;
+
     }
-
-  //  private void Update()
-  //  {
-   //     if(_primaryCooldownTimer.IsRunning()) 
-    //    { 
-    //        _primaryCooldownTimer.UpdateTimer(Time.deltaTime);
-    //    }
-
-     //   if(_secondaryCooldownTimer.IsRunning()) 
-    //    { 
-     //       _secondaryCooldownTimer.UpdateTimer(Time.deltaTime);
-     //   }    
-   // }
 
     public void AddPrimary(Weapon addedWeapon)
     {
         primaryWeaponList.Add(addedWeapon);
-        _currentPrimaryWeapon = primaryWeaponList[_currentWeaponIndex];
-        
+        _currentPrimaryWeapon = primaryWeaponList[_currentWeaponIndex];      
     }
 
-    public void AddSecondaryAmmo()
-    {
-        if(_secondaryWeaponAmmo < _maxSecondaryAmmo)
-        {
-            _secondaryWeaponAmmo++;
-        }
 
-    }
 
     public void FirePrimary()
     {
-        if (_primaryCooldownTimer.IsRunning) return;
+        if (_primaryCooldownTimer.IsRunningCoroutine) return;
     
         if (_currentPrimaryWeapon != null)
         {
-            // Debug.Log("In Fire Primary");
-        
+            SetUpWeapon(_currentPrimaryWeapon.WeaponType);
+
             _primaryWeaponSpawnPointIndex = (_primaryWeaponSpawnPointIndex +1) %_primaryWeaponSpawnPoints.Length;
            
             Transform weaponSpawn = _primaryWeaponSpawnPoints[_primaryWeaponSpawnPointIndex];
 
             _currentPrimaryWeapon.ShootWeapon(weaponSpawn.position, weaponSpawn.up,
-                                              weaponSpawn.rotation, _weaponTarget,unit);
+                                              weaponSpawn.rotation, _weaponTarget,_projectileParent);
 
-            Debug.Log(_primaryWeaponSpawnPointIndex);
+           // Debug.Log(_primaryWeaponSpawnPointIndex);
 
-            _primaryCooldownTimer.StartTimer();
+            _primaryCooldownTimer.StartTimerCoroutine();
         }
     }
 
-    public void FireSecondary() 
-    {
-       // if (_secondaryCooldownTimer.IsRunning() || _secondaryWeaponAmmo <= 0) return;
-        if (_secondaryCooldownTimer.IsRunning) return;
 
-        if (secondaryWeapon != null) 
-        {
-            secondaryWeapon.ShootWeapon(_secondaryWeaponSpawnPoint.transform.position, -_secondaryWeaponSpawnPoint.transform.up, _secondaryWeaponSpawnPoint.rotation,
-                                        _weaponTarget, unit);
-            _secondaryCooldownTimer.StartTimer();
-            _secondaryWeaponAmmo--;
-            Debug.Log("Secondary Ammo " + _secondaryWeaponAmmo);
-        }    
-    }
 
     public void SwitchPrimary(int swithchDirection)
     {
@@ -141,5 +106,21 @@ public class WeaponSystem : UnitSystems, IWeapon
             _currentWeaponIndex = (_currentWeaponIndex - 1 + primaryWeaponList.Count) % primaryWeaponList.Count;
             _currentPrimaryWeapon = primaryWeaponList[_currentWeaponIndex];
         }
+
+        _eventManager.OnUIChange?.Invoke(UIElementType.WeaponUI, _currentPrimaryWeapon.name);
+    }
+
+    protected void SetUpWeapon(string weaponType)
+    {
+        foreach(var weaponSpawn in _weaponSpawnPoints)
+        {
+            if(weaponSpawn.WeaponTypeTag == weaponType)
+            {
+                _primaryWeaponSpawnPoints = weaponSpawn.SpawnLocations;
+                _primaryWeaponCooldown = _currentPrimaryWeapon.WeaponCooldown;
+            }
+        }
+        
+
     }
 }

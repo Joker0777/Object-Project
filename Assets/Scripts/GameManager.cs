@@ -13,9 +13,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float _asteroidPrefabs;
     [SerializeField] private float _spawnAngle;
 
+    [SerializeField] PickupSpawner _pickUpSpawner;
+
+    [SerializeField] EventManager _eventManager;
+
     //[SerializeField] private int _enemyPoolSize = 10;
 
     private List<GameObject> _enemyUnits;
+    private List<GameObject> _pickUps;
 
     private Unit _nextUnit;
 
@@ -33,8 +38,28 @@ public class GameManager : MonoBehaviour
     {
       //  StartCoroutine(SpawnEnemy());
         _enemyUnits = new List<GameObject> ();
+        _pickUps = new List<GameObject> (); 
+
+        _pickUpSpawner = transform.root.GetComponent<PickupSpawner> ();
     }
 
+    private void OnEnable()
+    {
+        _eventManager.OnUnitDestroyed += UnitDestroyed;    
+    }
+
+    private void OnDisable()
+    {
+        _eventManager.OnUnitDestroyed -= UnitDestroyed;
+    }
+
+    public void UnitDestroyed(UnitType unit)
+    {
+        if (unit != UnitType.Player)
+        {
+            
+        }
+    }
     public void DestoyAllEnemyUnits()
     {
         foreach (GameObject unit in _enemyUnits)

@@ -9,14 +9,16 @@ public class SelfDestructWeapon : Weapon
 
     [SerializeField] protected int _weaponDamage = 70;
     [SerializeField] protected float explosionRadius = 5f;
+   
     
     private Unit _userUnit;
     private string _targetTag;
 
-     public override void ShootWeapon(Vector2 position, Vector2 direction, Quaternion rotation, string targetTag, Unit userUnit)
+     public override void ShootWeapon(Vector2 position, Vector2 direction, Quaternion rotation, string targetTag, Transform parent
+         )
  
     {     
-       _userUnit = userUnit;
+       //_userUnit = userUnit;
        _targetTag = targetTag; 
 
 

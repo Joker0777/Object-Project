@@ -10,16 +10,17 @@ public class InputSystem : UnitSystems
     protected float _scrolledInput;
 
     private IMovable movement;
-    private IWeapon weapon;
+    private PlayerWeaponSystem weapon;
 
     Vector2 _distanceToFace;
     float _angleToTurn;
 
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         movement = GetComponentInChildren<IMovable>();
-        weapon = GetComponentInChildren<IWeapon>();
+        weapon = GetComponentInChildren<PlayerWeaponSystem>();
 
         if (movement == null)
         {

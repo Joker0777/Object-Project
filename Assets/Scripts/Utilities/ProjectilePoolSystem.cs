@@ -53,7 +53,6 @@ public class ProjectilePoolSystem
             Debug.Log("In get projectile obj " + obj);
         }
 
-
         return obj;
     }
 
@@ -65,5 +64,4 @@ public class ProjectilePoolSystem
             Debug.Log("In Deactivate objects of type " + type);
         }
     }
-
 }

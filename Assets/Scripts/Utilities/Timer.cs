@@ -3,20 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
-public class Timer 
-{
-    private float _timer;
-    private float _timerDuration;
 
-    public float TimerDuration 
-    {  
-        get { return _timerDuration; } 
-        set { _timerDuration = value; }
-    }
+    
+    
 
     public void UpdateTimer(float deltaTime)
     {
-   
         if (_timer > 0)
         {
             _timer -= deltaTime;
@@ -26,9 +18,6 @@ public class Timer
             _timer = 0;
         }
     }
-
-
-
     
     public void StartTimer()
     {
@@ -40,23 +29,14 @@ public class Timer
     {
         return _timer > 0;
     }
-
-    public Timer(float timerDuration)
-    {
-        _timerDuration = timerDuration;
-    }
-}
-
 */
 
 public class Timer
 {
-    private Coroutine _cooldownCoroutine;
-    private MonoBehaviour _monoBehaviour;
-
-    public bool IsRunning => _cooldownCoroutine != null;
+    public bool IsRunningCoroutine = false;
 
     private float _timerDuration;
+    private float _timer;
 
     public float TimerDuration
     {
@@ -64,36 +44,72 @@ public class Timer
         set { _timerDuration = value; }
     }
 
+    public float TimeRemaining {  get { return _timer; } }  
 
-
-    public Timer(MonoBehaviour monoBehaviour, float timerDuration)
+    public Timer( float timerDuration)
     {
-        _monoBehaviour = monoBehaviour;
         _timerDuration = timerDuration;
     }
 
-    public void StartTimer()
-    {
-        if (IsRunning)
-        {
-            _monoBehaviour.StopCoroutine(_cooldownCoroutine);
-        }
 
-        _cooldownCoroutine = _monoBehaviour.StartCoroutine(CooldownCoroutine());
+
+
+    //Coroutine based timer
+    public void StartTimerCoroutine()
+    {
+        if (!IsRunningCoroutine)
+        {
+            CoroutineManager.Instance.Coroutine(TimerCoroutine());
+        }
     }
 
-    private IEnumerator CooldownCoroutine()
+    private IEnumerator TimerCoroutine()
     {
+        IsRunningCoroutine = true;
         yield return new WaitForSeconds(_timerDuration);
-        _cooldownCoroutine = null;
+        IsRunningCoroutine = false;
     }
 
-    public void StopTimer()
+    public void StopTimerCoroutine()
     {
-        if (IsRunning)
+        if (IsRunningCoroutine)
         {
-            _monoBehaviour.StopCoroutine(_cooldownCoroutine);
-            _cooldownCoroutine = null;
+            CoroutineManager.Instance.StopCoroutine(TimerCoroutine());
+            IsRunningCoroutine = false;
         }
+    }
+
+
+
+
+
+
+    //Basic timer
+    public void UpdateTimerBasic(float deltaTime)
+    {
+        if (_timer > 0)
+        {
+            _timer -= deltaTime;
+        }
+        else
+        {
+            _timer = 0;
+        }
+    }
+
+    public void StartTimerBasic()
+    {
+        _timer = _timerDuration;
+    }
+
+
+    public bool IsRunningBasic()
+    {
+        return _timer > 0;
+    }
+
+    public void StopTimerBasic()
+    {
+        _timer = 0;
     }
 }

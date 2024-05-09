@@ -9,23 +9,22 @@ using UnityEngine.Scripting.APIUpdating;
 public class Unit : MonoBehaviour, IDamagable
 {
     protected HealthSystem _healthSystem;
-    public int healthTest;
 
     [SerializeField] EventManager _eventManager;
     [SerializeField] UnitType _unitType;
     [SerializeField] private int _maxHealth = 100;
 
+    public UnitType UnitType {  get { return _unitType; } }
 
-    
-
-    public UnitType UnitType 
-    {  get { return _unitType; } }
+    public EventManager EventManager { get { return _eventManager; } }
 
     protected virtual void Start()
     {
         _healthSystem = ScriptableObject.CreateInstance<HealthSystem>();
         _healthSystem.CurrentHealth = _maxHealth;
-        _healthSystem.MaxHealth = _maxHealth;       
+        _healthSystem.MaxHealth = _maxHealth;
+
+        _eventManager.OnUIChange?.Invoke(UIElementType.HealthUI, GetHealth().ToString());
     }
 
     private void Update()
@@ -34,18 +33,27 @@ public class Unit : MonoBehaviour, IDamagable
         {
             UnitDestroyed();
         }
-        healthTest = GetHealth();
     }
 
     public virtual void DamageTaken(int damage)
     {
         _healthSystem.DecreaseHealth(damage);
-         _eventManager.HealthChangeEvents.OnUnitHealthChanged ?.Invoke(_healthSystem.CurrentHealth);
+        _eventManager.OnUnitHealthChanged ?.Invoke(_healthSystem.CurrentHealth);
+        if(UnitType == UnitType.Player)
+        {
+            _eventManager.OnUIChange?.Invoke(UIElementType.HealthUI, GetHealth().ToString());
+        }
     }
 
     public virtual void HealthIncrease(int health)
     {
-        _eventManager.HealthChangeEvents.OnUnitHealthChanged?.Invoke(_healthSystem.IncreaseHealth(health));
+        _healthSystem.IncreaseHealth(health);
+        _eventManager.OnUnitHealthChanged?.Invoke(_healthSystem.CurrentHealth);
+
+        if (UnitType == UnitType.Player)
+        {
+            _eventManager.OnUIChange?.Invoke(UIElementType.HealthUI, GetHealth().ToString());
+        }
     }
 
     public virtual int GetHealth()
@@ -55,8 +63,7 @@ public class Unit : MonoBehaviour, IDamagable
 
     protected virtual void UnitDestroyed()
     {
-        _eventManager.UnitDieEvents.OnUnitDestroyed?.Invoke();
+        _eventManager.OnUnitDestroyed?.Invoke(UnitType);
         Destroy(gameObject);
     }
-
 }

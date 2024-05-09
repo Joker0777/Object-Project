@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class PickUp : MonoBehaviour
 {
+    [SerializeField] PickupType type;
+    [SerializeField] string unitTag = "Player";
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Unit unit = collision.attachedRigidbody.GetComponent<Unit>();
-        if (unit != null && unit.CompareTag("Player"))
-        {
-            CollectObject(unit);           
-        }
-    }
+        if(collision == null) return;
 
-    public virtual void CollectObject(Unit unit)
-    {
-        Destroy(gameObject);
+        Unit unit = collision.GetComponent<Unit>();
+        if (unit != null && unit.CompareTag(unitTag))
+        {
+           PickUpManager.instance.CollectObject(unit, type);
+           Destroy(gameObject);
+        }       
     }
 }

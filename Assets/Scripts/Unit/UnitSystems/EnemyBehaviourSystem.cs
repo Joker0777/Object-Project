@@ -5,29 +5,29 @@ using UnityEngine;
 public class EnemyBehaviourSystem : UnitSystems
 {
 
-    private CircleCollider2D _targetRadiusCollider;
+    protected CircleCollider2D _targetRadiusCollider;
 
-    private IMovable movement;
-    private IWeapon weapon;
+    protected IMovable movement;
+    private WeaponSystem weapon;
 
-    [SerializeField] private float _attackRange = 3;
-    [SerializeField] private float _detectRange = 7;
-    [SerializeField] private float _stopRange = 1;
+    [SerializeField] protected float _attackRange = 3;
+    [SerializeField] protected float _detectRange = 7;
+    [SerializeField] protected float _stopRange = 1;
 
 
-    private EnemyState _currentState;
+    protected EnemyState _currentState;
 
-    private GameObject _target;
+    protected GameObject _target;
 
-    private float _angleToTurn;
+    protected float _angleToTurn;
     protected Vector2 moveInput;
-    private Vector2 directionToCurrentTarget;
+    protected Vector2 directionToCurrentTarget;
 
     protected override void Awake()
     {
         base.Awake();
         movement = GetComponentInChildren<IMovable>();
-        weapon = GetComponentInChildren<IWeapon>();
+        weapon = GetComponentInChildren<WeaponSystem>();
 
         _targetRadiusCollider = GetComponent<CircleCollider2D>();
 
@@ -50,11 +50,10 @@ public class EnemyBehaviourSystem : UnitSystems
 
         directionToCurrentTarget = Vector2.zero;
     }
-
    
 
 
-    void Update()
+    protected virtual void Update()
     {
         _angleToTurn = Mathf.Atan2(directionToCurrentTarget.y, directionToCurrentTarget.x) * Mathf.Rad2Deg;
 
@@ -76,7 +75,7 @@ public class EnemyBehaviourSystem : UnitSystems
         }
     }
 
-    private bool InRange(float range)
+    protected bool InRange(float range)
     {
         if(_target != null && Vector2.Distance(_target.transform.position,transform.position) < range)
         {
@@ -85,7 +84,7 @@ public class EnemyBehaviourSystem : UnitSystems
         return false;
     }
 
-    private void FollowTarget()
+    protected void FollowTarget()
     {
         if (_target != null) 
         {
@@ -102,13 +101,14 @@ public class EnemyBehaviourSystem : UnitSystems
         }
     }
   
-    private void Patrol()
+    protected void Patrol()
     {
         moveInput = Vector2.zero;
     }
 
-    private void Attack()
+    protected void Attack()
     {
+        
         FollowTarget();
 
         weapon?.FirePrimary();
@@ -119,7 +119,7 @@ public class EnemyBehaviourSystem : UnitSystems
         }
     }
 
-    private void DetectTarget()
+    protected  void DetectTarget()
     {
         FollowTarget();
 
@@ -129,7 +129,7 @@ public class EnemyBehaviourSystem : UnitSystems
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    protected void OnTriggerStay2D(Collider2D collision)
     {       
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -138,7 +138,7 @@ public class EnemyBehaviourSystem : UnitSystems
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    protected void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {

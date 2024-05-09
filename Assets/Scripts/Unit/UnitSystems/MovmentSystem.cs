@@ -16,19 +16,17 @@ public class MovmentSystem : UnitSystems, IMovable
 
     protected Rigidbody2D _rigidbody2D;
 
-    protected override void Awake()
+    public float Speed
     {
-        base.Awake();
-
+        get { return _speed; }
+        set { _speed = value; }
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         _rigidbody2D = unit.GetComponent<Rigidbody2D>();
     }
-
-
-
 
     protected virtual void FixedUpdate()
     {
