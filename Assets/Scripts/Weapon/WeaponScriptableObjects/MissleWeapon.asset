@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36a423f504eb5f047aabbc2f71d8b881, type: 3}
-  m_Name: PlasmaWeapon
+  m_Name: MissleWeapon
   m_EditorClassIdentifier: 
-  _weaponType: PlasmaWeapon
-  _weaponCooldown: 0.6
-  _accuracy: 0.752
-  _weaponSpeed: 100
+  _weaponType: MissleWeapon
+  _weaponCooldown: 1.5
+  _accuracy: 1
+  _weaponSpeed: 150
   _weaponDamage: 40
   _targetTag: Enemy
-  _projectilePrefab: {fileID: 1368470505411515553, guid: 59bf9b87de025f94eba91a3c687860bf, type: 3}
-  _poolSize: 10
+  _projectilePrefab: {fileID: 1368470505411515553, guid: 4ef38acb8ec5add49ae300ffef0037b9, type: 3}
+  _poolSize: 6

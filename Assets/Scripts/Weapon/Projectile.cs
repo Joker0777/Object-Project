@@ -16,7 +16,6 @@ public class Projectile : MonoBehaviour
     private Rigidbody2D rb;
 
 
-
     private void Awake()
     {
         _projectileTimer = new Timer(_projectileTimerLength);
@@ -27,7 +26,6 @@ public class Projectile : MonoBehaviour
 
     protected virtual void Update()
     {
-     //   transform.Translate(Vector3.up * _projectileSpeed * Time.deltaTime);
 
         if (_fired)
         {
@@ -50,7 +48,7 @@ public class Projectile : MonoBehaviour
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {     
-        if (collision.gameObject.CompareTag(_targetTag))
+        if (collision.gameObject.CompareTag(_targetTag) || collision.gameObject.CompareTag("Asteroid"))
         {
             collision.collider.attachedRigidbody.GetComponent<IDamagable>().DamageTaken(_projectileDamage);
         }

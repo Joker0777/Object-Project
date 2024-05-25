@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36a423f504eb5f047aabbc2f71d8b881, type: 3}
-  m_Name: EnemyLaserWeapon
+  m_Name: PlasmaWeapon
   m_EditorClassIdentifier: 
-  _weaponType: EnemyLaserWeapon
+  _weaponType: PlasmaWeapon
   _weaponCooldown: 1
   _accuracy: 1
-  _weaponSpeed: 200
-  _weaponDamage: 1
-  _targetTag: Player
-  _projectilePrefab: {fileID: 1368470505411515553, guid: 299018969c537724ebd4f0272fe64585, type: 3}
-  _poolSize: 10
+  _weaponSpeed: 100
+  _weaponDamage: 40
+  _targetTag: Enemy
+  _projectilePrefab: {fileID: 1368470505411515553, guid: 59bf9b87de025f94eba91a3c687860bf, type: 3}
+  _poolSize: 6

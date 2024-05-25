@@ -12,11 +12,16 @@ public class EventManager : ScriptableObject
     public Action<int> OnUnitHealthChanged;
 
     //Unit 
-    public Action <UnitType>OnUnitDestroyed;
+    public Action <UnitType, Vector3>OnUnitDestroyed;
 
     //UI
     public Action<UIElementType, string> OnUIChange;
 
     //PickUps
     public Action<PickUp> OnPickupSpawned;
+
+    //Asteroids
+    public Action<float, Asteroid> OnAstreroidSplitEvent;
+    public Action<Vector2, float> OnAsteroidDestroyedEffectEvent;
+
 }

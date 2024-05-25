@@ -12,41 +12,26 @@ public class PlayerWeaponSystem : WeaponSystem
 
     [SerializeField] protected int _maxSecondaryAmmo = 3;
 
-    [SerializeField] protected Weapon _secondaryPrefab;//set the secondary weapon
+    [SerializeField] protected Weapon _secondaryPrefab;
 
     private int _secondaryWeaponAmmo = 0;
-    private float _fireRateIncreaseFactor = 1f;
 
     private Timer _secondaryCooldownTimer;
 
 
-    public float PrimaryWeaponCooldown
-    {
-        get { return _primaryWeaponCooldown; }
-        set
-        {
-            _primaryWeaponCooldown = value / _fireRateIncreaseFactor;
-            _primaryCooldownTimer.TimerDuration = value;
-        }
-    }
-
-    public float FireRateIncreaseFactor
-    {
-        set
-        {
-            _fireRateIncreaseFactor = value;
-            PrimaryWeaponCooldown = _primaryWeaponCooldown;
-        }
-        get { return _fireRateIncreaseFactor; }
-    }
 
     protected override void Start()
     {
         base.Start();
 
-        _eventManager.OnUIChange?.Invoke(UIElementType.BombUI, _secondaryWeaponAmmo.ToString());
+        _eventManager.OnUIChange?.Invoke(UIElementType.Bomb, _secondaryWeaponAmmo.ToString());
 
         secondaryWeapon = _secondaryPrefab;
+
+        _secondaryCooldownTimer = new Timer(_secondaryWeaponCooldown);
+ 
+        _eventManager.OnUIChange?.Invoke(UIElementType.Weapon, _currentWeapon.name);
+        
     }
 
 
@@ -55,7 +40,7 @@ public class PlayerWeaponSystem : WeaponSystem
         if (_secondaryWeaponAmmo < _maxSecondaryAmmo)
         {
             _secondaryWeaponAmmo++;
-            _eventManager.OnUIChange?.Invoke(UIElementType.BombUI, _secondaryWeaponAmmo.ToString());
+            _eventManager.OnUIChange?.Invoke(UIElementType.Bomb, _secondaryWeaponAmmo.ToString());
         }
     }
 
@@ -63,13 +48,33 @@ public class PlayerWeaponSystem : WeaponSystem
     {
         if (_secondaryCooldownTimer.IsRunningCoroutine || _secondaryWeaponAmmo <= 0) return;
 
-
         if (secondaryWeapon != null)
         {
-            secondaryWeapon.ShootWeapon(_secondaryWeaponSpawnPoint.transform.position, -_secondaryWeaponSpawnPoint.transform.up, _secondaryWeaponSpawnPoint.rotation,
+            secondaryWeapon.ShootWeapon(_secondaryWeaponSpawnPoint.transform.position, _secondaryWeaponSpawnPoint.transform.up, _secondaryWeaponSpawnPoint.rotation,
                                         _weaponTarget, _projectileParent);
             _secondaryCooldownTimer.StartTimerCoroutine();
             _secondaryWeaponAmmo--;
+            _eventManager.OnUIChange?.Invoke(UIElementType.Bomb, _secondaryWeaponAmmo.ToString());
         }
+    }
+
+    public override void SwitchWeapon(int swithchDirection)
+    {
+        if (_weaponList.Count == 0)
+        {
+            return;
+        }
+        if (swithchDirection > 0)
+        {
+            _currentWeaponIndex = (_currentWeaponIndex + 1) % _weaponList.Count;
+            _currentWeapon = _weaponList[_currentWeaponIndex];
+        }
+        else
+        {
+            _currentWeaponIndex = (_currentWeaponIndex - 1 + _weaponList.Count) % _weaponList.Count;
+            _currentWeapon = _weaponList[_currentWeaponIndex];
+        }
+
+        _eventManager.OnUIChange?.Invoke(UIElementType.Weapon, _currentWeapon.name);
     }
 }

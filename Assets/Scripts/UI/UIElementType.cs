@@ -4,9 +4,9 @@ using UnityEngine;
 
 public enum UIElementType
 {
-    HealthUI,
-    BombUI,
-    WeaponUI,
-    PickUpTimerUI,
-    ScoreUI
+    Health,
+    Bomb,
+    Weapon,
+    PickUpTimer,
+    Score
 }

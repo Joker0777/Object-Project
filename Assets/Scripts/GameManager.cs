@@ -10,37 +10,34 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float _spawnDistance = 8f;
     [SerializeField] private float _spawnDelay = 5f;
 
-    [SerializeField] private float _asteroidPrefabs;
-    [SerializeField] private float _spawnAngle;
-
     [SerializeField] PickupSpawner _pickUpSpawner;
 
     [SerializeField] EventManager _eventManager;
 
-    //[SerializeField] private int _enemyPoolSize = 10;
-
     private List<GameObject> _enemyUnits;
-    private List<GameObject> _pickUps;
+  //  private List<GameObject> _pickUps;
 
-    private Unit _nextUnit;
 
     private void Awake()
     {
-        Instance = this;
+        if(Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
 
-       // foreach (var enemy in enemyUnits)
-        //{
-        //    ObjectPoolSystem.Instance.AddPool(_enemyPoolSize, enemy.UnitType.ToString(), enemy, this.transform);
-      //  }
     }
 
     private void Start()
     {
-      //  StartCoroutine(SpawnEnemy());
+        StartCoroutine(SpawnEnemy());
         _enemyUnits = new List<GameObject> ();
-        _pickUps = new List<GameObject> (); 
-
-        _pickUpSpawner = transform.root.GetComponent<PickupSpawner> ();
+       // _pickUps = new List<GameObject> (); 
     }
 
     private void OnEnable()
@@ -53,7 +50,7 @@ public class GameManager : MonoBehaviour
         _eventManager.OnUnitDestroyed -= UnitDestroyed;
     }
 
-    public void UnitDestroyed(UnitType unit)
+    public void UnitDestroyed(UnitType unit, Vector3 position)
     {
         if (unit != UnitType.Player)
         {
@@ -62,16 +59,20 @@ public class GameManager : MonoBehaviour
     }
     public void DestoyAllEnemyUnits()
     {
-        foreach (GameObject unit in _enemyUnits)
+        Debug.Log("In Destroy all enemy units");
+        
+        if(_enemyUnits.Count > 0 && _enemyUnits != null)
         {
-            if (unit != null) 
-            { 
-                Destroy(unit.gameObject);
+            foreach (GameObject unit in _enemyUnits)
+            {
+                if (unit != null)
+                {
+                    Destroy(unit.gameObject);
+                }
             }
+            _enemyUnits.Clear();
         }
-        _enemyUnits.Clear();
     }
-
 
 
     IEnumerator SpawnEnemy()
@@ -84,16 +85,10 @@ public class GameManager : MonoBehaviour
 
             Vector2 spawnPoint = new Vector2(transform.position.x, transform.position.y) + randomPosition;
 
-            int enemyIndex = Random.Range(0, enemyUnits.Length - 1);
+            int enemyIndex = Random.Range(0, enemyUnits.Length);
 
-           // _nextUnit = ObjectPoolSystem.Instance.GetObject(enemyUnits[enemyIndex].UnitType.ToString());
-
-           // _nextUnit.transform.SetPositionAndRotation(spawnPoint, Quaternion.identity);
-
-
-
-           Unit newShip = Instantiate(enemyUnits[enemyIndex], spawnPoint, Quaternion.identity);
-          _enemyUnits.Add(newShip.gameObject);
+            Unit newShip = Instantiate(enemyUnits[enemyIndex], spawnPoint, Quaternion.identity);
+           _enemyUnits.Add(newShip.gameObject);
         }
     }
 }

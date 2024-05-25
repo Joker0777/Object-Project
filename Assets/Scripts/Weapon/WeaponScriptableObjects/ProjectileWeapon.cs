@@ -32,21 +32,16 @@ public class ProjectileWeapon : Weapon
 
     public override void ShootWeapon(Vector2 position, Vector2 direction, Quaternion rotation, string targetTag, Transform parent)
     {
-        _nextProjectile = ProjectilePoolSystem.Instance.GetObject(_weaponType);
-       // Debug.Log("In Shoot Weapon. next projectile " + _nextProjectile);
+        _nextProjectile = ObjectPoolSystem<Projectile>.Instance.GetObject(_weaponType);
 
          if (_nextProjectile == null)
          {
-
-            ProjectilePoolSystem.Instance.AddPool(_poolSize, _weaponType, _projectilePrefab, parent);
-            _nextProjectile = ProjectilePoolSystem.Instance.GetObject(_weaponType);
-          //  Debug.Log("In Shoot Weapon after next projectile was null. next projectile " + _nextProjectile);
+            ObjectPoolSystem<Projectile>.Instance.AddPool(_poolSize, _weaponType, _projectilePrefab, parent);
+            _nextProjectile = ObjectPoolSystem<Projectile>.Instance.GetObject(_weaponType);
         }
 
          _nextProjectile.transform.position = position;
          _nextProjectile.transform.rotation = SetTrajectoryAngle(direction, rotation);
-
-        //_nextProjectile = Instantiate(_projectilePrefab, position, rotation);
 
         _nextProjectile.SetupProjectile(_weaponDamage, _weaponSpeed, targetTag);
     }

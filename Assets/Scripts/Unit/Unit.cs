@@ -10,7 +10,7 @@ public class Unit : MonoBehaviour, IDamagable
 {
     protected HealthSystem _healthSystem;
 
-    [SerializeField] EventManager _eventManager;
+    [SerializeField] protected EventManager _eventManager;
     [SerializeField] UnitType _unitType;
     [SerializeField] private int _maxHealth = 100;
 
@@ -20,14 +20,12 @@ public class Unit : MonoBehaviour, IDamagable
 
     protected virtual void Start()
     {
-        _healthSystem = ScriptableObject.CreateInstance<HealthSystem>();
+        _healthSystem = new HealthSystem();
         _healthSystem.CurrentHealth = _maxHealth;
         _healthSystem.MaxHealth = _maxHealth;
-
-        _eventManager.OnUIChange?.Invoke(UIElementType.HealthUI, GetHealth().ToString());
     }
 
-    private void Update()
+    protected void Update()
     {
         if (_healthSystem.IsDestroyed)
         {
@@ -35,35 +33,24 @@ public class Unit : MonoBehaviour, IDamagable
         }
     }
 
+    protected void UnitDestroyed()
+    {
+        _eventManager.OnUnitDestroyed?.Invoke(UnitType, transform.position);
+        Destroy(gameObject);
+    }
+
     public virtual void DamageTaken(int damage)
     {
         _healthSystem.DecreaseHealth(damage);
-        _eventManager.OnUnitHealthChanged ?.Invoke(_healthSystem.CurrentHealth);
-        if(UnitType == UnitType.Player)
-        {
-            _eventManager.OnUIChange?.Invoke(UIElementType.HealthUI, GetHealth().ToString());
-        }
     }
 
     public virtual void HealthIncrease(int health)
     {
         _healthSystem.IncreaseHealth(health);
-        _eventManager.OnUnitHealthChanged?.Invoke(_healthSystem.CurrentHealth);
-
-        if (UnitType == UnitType.Player)
-        {
-            _eventManager.OnUIChange?.Invoke(UIElementType.HealthUI, GetHealth().ToString());
-        }
     }
 
-    public virtual int GetHealth()
+    public int GetHealth()
     {
         return _healthSystem.CurrentHealth;
-    }
-
-    protected virtual void UnitDestroyed()
-    {
-        _eventManager.OnUnitDestroyed?.Invoke(UnitType);
-        Destroy(gameObject);
     }
 }

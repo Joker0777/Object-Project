@@ -51,9 +51,9 @@ public class InputSystem : UnitSystems
 
 
         //Primary Weapon
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+        if (Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0))
         {
-              weapon?.FirePrimary();
+              weapon?.FireWeapon();
         }
 
         //Secondary Weapon
@@ -65,12 +65,12 @@ public class InputSystem : UnitSystems
         //Change Primary Weapon
         if(_scrolledInput > 0 || Input.GetKeyDown(KeyCode.E))
         {
-            weapon?.SwitchPrimary(1);        
+            weapon?.SwitchWeapon(1);        
         }
 
         if(_scrolledInput < 0 || Input.GetKeyDown(KeyCode.Q))
         {
-            weapon?.SwitchPrimary(-1);
+            weapon?.SwitchWeapon(-1);
         }
 
     }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthSystem : ScriptableObject
+public class HealthSystem
 {
     private int _currentHealth;
     private int _startingHealth;
@@ -20,7 +20,10 @@ public class HealthSystem : ScriptableObject
     public int StartingHealth
     {
         get { return _startingHealth; }
-        set { _startingHealth = value; }
+        set { 
+            _startingHealth = value;
+            _isDestroyed = false;
+        }
     }
     public int MaxHealth 
     { 
@@ -43,6 +46,7 @@ public class HealthSystem : ScriptableObject
     public bool IsDestroyed
     {
         get { return _isDestroyed; }
+        set { _isDestroyed = value; }
     }
 
     public int DecreaseHealth()
@@ -58,9 +62,6 @@ public class HealthSystem : ScriptableObject
             _currentHealth = _minHealth;
             _isDestroyed = true;
         }
-
-        Debug.Log("In decrease health");
-
         return _currentHealth;
     }
 

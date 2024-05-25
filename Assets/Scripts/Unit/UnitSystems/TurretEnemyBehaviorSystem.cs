@@ -6,24 +6,24 @@ public class TurretEnemyBehaviorSystem : EnemyBehaviourSystem
 {
     [SerializeField] TurretController[] _turrets;
 
-
     protected override void Update()
     {
-        if (_currentState == EnemyState.Attack)
+        if (_currentState == EnemyState.AttackTarget)
         {
             foreach (TurretController controller in _turrets)
             {
-                controller.RotateTurretToTarget(directionToCurrentTarget);
+                controller.RotateTurretToTarget(directionToMove);
             }
         }
-      //  else
-      //  {
-       //     foreach(TurretController controller in _turrets)
-       //     {
-        //        controller.RotateTurretToTarget(unit.transform.forward);
-        //    }
+     //   else
+     //   {
+      //      foreach(TurretController controller in _turrets)
+     //       {
+         //       controller.RotateTurretToTarget(unit.transform.forward);
+      //      }
       //  }
         
         base.Update();
     }
+
 }

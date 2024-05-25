@@ -22,7 +22,6 @@ public class UIElement : MonoBehaviour
         { 
             _updatedUIText = value;
             _textUI.text = $"{elementType} : {UpdatedUIText}";
-            Debug.Log("In updated ui text " + _updatedUIText);
         }
         get { return _updatedUIText; }
     }

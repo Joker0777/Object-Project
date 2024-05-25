@@ -9,13 +9,13 @@ public class ObjectPool<T> where T : MonoBehaviour
     private int _poolSize;
     private string _objectTag;
 
-    public string PrefabTag {  get { return _objectTag; } }
+    public string ObjectTag {  get { return _objectTag; } }
 
     public int CurrentPoolSize { get { return _objectPool.Count; } }
     
-    public ObjectPool(T @object, int poolSize, Transform parentTransform, string tag)
+    public ObjectPool(T obj, int poolSize, Transform parentTransform, string tag)
     {
-        _object = @object;
+        _object = obj;
         _parentTransform = parentTransform;
         _poolSize = poolSize;
         _objectTag = tag;
@@ -35,7 +35,7 @@ public class ObjectPool<T> where T : MonoBehaviour
         }
           T newObject = CreateObject(true);
           return newObject;
-    }
+      }
 
     public void ReturnObject(T obj)
     {
@@ -44,7 +44,6 @@ public class ObjectPool<T> where T : MonoBehaviour
 
     public void DeactivateAll()
     {
-        Debug.Log("In deactivate log for object " + _objectTag);
         foreach (T obj in _objectPool)
         {
             obj.gameObject.SetActive(false);

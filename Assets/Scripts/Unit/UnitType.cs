@@ -5,7 +5,6 @@ using UnityEngine;
 public enum UnitType
 {
   Player,
-  SharpShooterEnemy,
-  MachineGunEnemy,
-  SelfDestructEnemy
+  Enemy,
+  Asteroid
 }

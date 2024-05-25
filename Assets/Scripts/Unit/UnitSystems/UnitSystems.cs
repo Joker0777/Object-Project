@@ -19,6 +19,10 @@ public abstract class UnitSystems : MonoBehaviour
     protected virtual void Start()
     {
         _eventManager = unit.EventManager;
+        if (_eventManager == null)
+        {
+            Debug.LogError("EventManager is not assigned.");
+        }
     }
 
 }

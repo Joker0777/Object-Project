@@ -12,17 +12,19 @@ public class IncreaseFireRatePowerUp
 
     private PlayerWeaponSystem weaponSystem;
 
-    public IncreaseFireRatePowerUp(float fireRateIncreaseFactor = 5f) { _fireRateIncreaseFactor= fireRateIncreaseFactor; }
+    public IncreaseFireRatePowerUp(float fireRateIncreaseFactor = 5f) 
+    { 
+        _fireRateIncreaseFactor = fireRateIncreaseFactor; 
+    }
 
     public void ActivatePowerUp(Unit unit)
     {
         if ((weaponSystem = unit.GetComponentInChildren<PlayerWeaponSystem>()) == null)
             return;
 
-       // _currentCooldown = weaponSystem.PrimaryWeaponCooldown;
-
-        //weaponSystem.PrimaryWeaponCooldown /= _fireRateIncreaseFactor;
-        _currentFireRateIncreaseFactor = weaponSystem.FireRateIncreaseFactor;
+       
+       _currentCooldown = weaponSystem.WeaponCooldown;
+       _currentFireRateIncreaseFactor = weaponSystem.FireRateIncreaseFactor;
 
         weaponSystem.FireRateIncreaseFactor = _fireRateIncreaseFactor;
     }
@@ -31,7 +33,7 @@ public class IncreaseFireRatePowerUp
     {
         if (weaponSystem != null)
         {
-            // weaponSystem.PrimaryWeaponCooldown = _currentCooldown;
+            weaponSystem.WeaponCooldown = _currentCooldown;
             weaponSystem.FireRateIncreaseFactor = _currentFireRateIncreaseFactor;
         }
     }
