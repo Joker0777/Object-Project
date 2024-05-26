@@ -14,6 +14,8 @@ public class PlayerWeaponSystem : WeaponSystem
 
     [SerializeField] protected Weapon _secondaryPrefab;
 
+    [SerializeField] protected GameObject[] _weaponVisials;
+
     private int _secondaryWeaponAmmo = 0;
 
     private Timer _secondaryCooldownTimer;
@@ -34,6 +36,22 @@ public class PlayerWeaponSystem : WeaponSystem
         
     }
 
+    public override void AddWeapon(Weapon addedWeapon)
+    {
+        if (addedWeapon != null && !_weaponList.Contains(addedWeapon))
+        {
+            _weaponList.Add(addedWeapon);
+            _currentWeapon = _weaponList[_currentWeaponIndex];
+
+            foreach (var weapon in _weaponVisials)
+            {
+                if (weapon != null && addedWeapon.WeaponType == weapon.name)
+                {
+                    weapon.SetActive(true);
+                }
+            }
+        }
+    }
 
     public void AddSecondaryAmmo()
     {

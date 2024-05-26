@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class WeaponSpawnPoint
+public class WeaponSpawnPoints
 { 
     [SerializeField] Transform[] spawnLocations;
     [SerializeField] string weaponTypeTag;

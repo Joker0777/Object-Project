@@ -7,7 +7,7 @@ using UnityEngine;
 public class WeaponSystem : UnitSystems 
 {
     [SerializeField]protected List<Weapon> _weaponList = new List<Weapon>();
-    [SerializeField]protected WeaponSpawnPoint[] _weaponSpawnPoints;
+    [SerializeField]protected WeaponSpawnPoints[] _weaponSpawnPoints;
     [SerializeField]protected Transform _projectileParent;
   
     [SerializeField]protected float _currentWeaponCooldown;  
@@ -56,7 +56,7 @@ public class WeaponSystem : UnitSystems
         }
     }
 
-    public void AddWeapon(Weapon addedWeapon)
+    public virtual void AddWeapon(Weapon addedWeapon)
     {
         if (addedWeapon != null && !_weaponList.Contains(addedWeapon))
         {

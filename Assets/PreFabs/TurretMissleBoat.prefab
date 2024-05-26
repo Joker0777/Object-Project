@@ -399,8 +399,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51809d1897dd7b74da9747ca751aab6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _turnSpeed: 1
-  _speed: 1
+  _turnSpeed: 0.1
+  _speed: 3
 --- !u!1 &7309586049702947830
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,22 +445,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b65a197c6596104184cb0324464dd3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponList:
+  - {fileID: 11400000, guid: e78ea2729f2d4d94ca3a04b51a5b9a51, type: 2}
+  - {fileID: 11400000, guid: c8283a1e7d5ec8447a0cd0cc38fe68d8, type: 2}
   _weaponSpawnPoints:
   - spawnLocations:
     - {fileID: 2118313348844354028}
     - {fileID: 1385288585010947196}
     weaponTypeTag: EnemyMachineGun
   - spawnLocations:
-    - {fileID: 2118313348844354028}
-    - {fileID: 1385288585010947196}
-    weaponTypeTag: EnemyMachineGun
-  - spawnLocations:
-    - {fileID: 2118313348844354028}
-    - {fileID: 1385288585010947196}
+    - {fileID: 4586039803275837023}
+    - {fileID: 7049827218683489709}
     weaponTypeTag: EnemyMissleWeapon
   _projectileParent: {fileID: 0}
-  _primaryWeapon: {fileID: 11400000, guid: e78ea2729f2d4d94ca3a04b51a5b9a51, type: 2}
-  _primaryWeaponCooldown: 0.5
+  _currentWeaponCooldown: 0
   _weaponTarget: Player
 --- !u!1 &7712387941862189998
 GameObject:
@@ -473,10 +471,9 @@ GameObject:
   - component: {fileID: 3147112117122647895}
   - component: {fileID: 3819127962506061680}
   - component: {fileID: 5586700685515999371}
-  - component: {fileID: 6787933701193844321}
   - component: {fileID: 4935735163135478589}
-  - component: {fileID: 2064701297358313782}
   - component: {fileID: 2934249049385729229}
+  - component: {fileID: 6351948224380287390}
   m_Layer: 6
   m_Name: TurretMissleBoat
   m_TagString: Enemy
@@ -584,41 +581,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &6787933701193844321
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7712387941862189998}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.3015623, y: 0.16306162}
-  serializedVersion: 2
-  m_Radius: 5.17607
 --- !u!114 &4935735163135478589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,8 +596,28 @@ MonoBehaviour:
   _eventManager: {fileID: 11400000, guid: 415665ee65827384bac5c210591b82dd, type: 2}
   _unitType: 3
   _maxHealth: 100
---- !u!58 &2064701297358313782
-CircleCollider2D:
+--- !u!114 &2934249049385729229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7712387941862189998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e1829dafb12b25439159e41cfb9b15a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detectRange: 10
+  _stopRange: 1
+  _playerAttackRange: 5
+  _asteroidAttackRange: 2
+  angleThresholdWeapon1: -1
+  angleThresholdWeapon2: 0.9
+  _turrets:
+  - {fileID: 7992392459693645602}
+--- !u!60 &6351948224380287390
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -667,25 +649,41 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.25
---- !u!114 &2934249049385729229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7712387941862189998}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e1829dafb12b25439159e41cfb9b15a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _attackRange: 7
-  _detectRange: 9
-  _stopRange: 3
-  _turrets:
-  - {fileID: 7992392459693645602}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 2}
+    newSize: {x: 1, y: 0.8828125}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.5, y: -0.5625}
+      - {x: 0.5, y: -0.4375}
+      - {x: 0.359375, y: -0.25}
+      - {x: 0.296875, y: -0.28125}
+      - {x: 0.1875, y: -0.328125}
+      - {x: 0.15625, y: 0.0625}
+      - {x: 0.0625, y: 0.90625}
+      - {x: 0.046875, y: 1}
+      - {x: -0.0625, y: 1}
+      - {x: -0.09375, y: 0.734375}
+      - {x: -0.140625, y: 0.234375}
+      - {x: -0.171875, y: -0.265625}
+      - {x: -0.328125, y: -0.265625}
+      - {x: -0.375, y: -0.28125}
+      - {x: -0.5, y: -0.4375}
+      - {x: -0.5, y: -0.5625}
+      - {x: -0.359375, y: -0.671875}
+      - {x: -0.15625, y: -0.71875}
+      - {x: -0.046875, y: -1}
+      - {x: 0.0625, y: -1}
+      - {x: 0.171875, y: -0.6875}
+      - {x: 0.296875, y: -0.671875}
+      - {x: 0.4375, y: -0.625}
+  m_UseDelaunayMesh: 0
 --- !u!1 &8271715189394944757
 GameObject:
   m_ObjectHideFlags: 0

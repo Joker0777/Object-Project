@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _turnSpeed: 3
-  _speed: 1
+  _speed: 4
 --- !u!1 &7309586049702947830
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,19 +121,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b65a197c6596104184cb0324464dd3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponList:
+  - {fileID: 11400000, guid: e78ea2729f2d4d94ca3a04b51a5b9a51, type: 2}
   _weaponSpawnPoints:
   - spawnLocations:
     - {fileID: 8109475797563974539}
     - {fileID: 6752764119702187964}
     weaponTypeTag: EnemyMachineGun
-  _secondaryWeaponSpawnPoint: {fileID: 0}
   _projectileParent: {fileID: 0}
-  _primaryWeapon: {fileID: 11400000, guid: e78ea2729f2d4d94ca3a04b51a5b9a51, type: 2}
-  _secondaryPrefab: {fileID: 0}
-  _primaryWeaponCooldown: 0.1
-  _secondaryWeaponCooldown: 3
+  _currentWeaponCooldown: 0
   _weaponTarget: Player
-  _maxSecondaryAmmo: 3
 --- !u!1 &7712387941862189998
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +143,6 @@ GameObject:
   - component: {fileID: 3819127962506061680}
   - component: {fileID: 8773015063315719207}
   - component: {fileID: 5586700685515999371}
-  - component: {fileID: 6787933701193844321}
   - component: {fileID: 4935735163135478589}
   - component: {fileID: 616166768605190258}
   m_Layer: 6
@@ -239,9 +235,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad7a7c2797e46604abd4999eab22b6a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackRange: 4
-  _detectRange: 8
+  _detectRange: 15
   _stopRange: 3
+  _playerAttackRange: 4
+  _asteroidAttackRange: 4
+  angleThresholdWeapon1: 0.9
+  angleThresholdWeapon2: 0
 --- !u!50 &5586700685515999371
 Rigidbody2D:
   serializedVersion: 4
@@ -269,41 +268,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &6787933701193844321
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7712387941862189998}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.3015623, y: 0.16306162}
-  serializedVersion: 2
-  m_Radius: 5.17607
 --- !u!114 &4935735163135478589
 MonoBehaviour:
   m_ObjectHideFlags: 0
