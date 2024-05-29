@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IncreaseSpeedPowerUP
+public class IncreaseSpeedPowerUP : PowerUpPickUp
 {
     private float _speedIncreaseFactor;
 
@@ -15,7 +15,7 @@ public class IncreaseSpeedPowerUP
         _speedIncreaseFactor = speedIncreaseFactor; 
     }
 
-    public void ActivatePowerUp(Unit unit)
+    public override void ActivatePowerUp(Unit unit)
     {
         if ((movmentSystem = unit.GetComponentInChildren<MovmentSystem>()) == null)
             return;
@@ -25,7 +25,7 @@ public class IncreaseSpeedPowerUP
         movmentSystem.Speed *= _speedIncreaseFactor;
     }
 
-    public void DeactivatePowerUp(Unit unit)
+    public override void DeactivatePowerUp(Unit unit)
     {
         if (movmentSystem != null)
         {

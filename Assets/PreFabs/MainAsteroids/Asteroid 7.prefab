@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8496382837314298157}
   - component: {fileID: -93986841072064471}
   - component: {fileID: 5066524600170370652}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Asteroid 7
   m_TagString: Asteroid
   m_Icon: {fileID: 0}
@@ -129,8 +129,8 @@ MonoBehaviour:
   _asteroidSize: 1
   _asteroidMinSize: 0.5
   _asteroidMazSize: 1.5
-  _asteroidSpeed: 20
-  _torqueForce: 10
+  _asteroidSpeed: 25
+  _torqueForce: 15
   maxLife: 20
   _startingHealth: 20
   _eventManager: {fileID: 11400000, guid: 415665ee65827384bac5c210591b82dd, type: 2}

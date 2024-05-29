@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8496382837314298157}
   - component: {fileID: -93986841072064471}
   - component: {fileID: 7250878773420504707}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: BrokenAsteroid 2
   m_TagString: Asteroid
   m_Icon: {fileID: 0}

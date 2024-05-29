@@ -15,7 +15,6 @@ public class InputSystem : UnitSystems
     Vector2 _distanceToFace;
     float _angleToTurn;
 
-
     protected override void Start()
     {
         base.Start();
@@ -41,6 +40,8 @@ public class InputSystem : UnitSystems
         _scrolledInput = Input.GetAxis("Mouse ScrollWheel");
 
         Vector2 moveInput = new Vector2(_horizontalInput, _verticalInput);
+
+        unit.EventManager.IsThrusting(_verticalInput > 0 ? true : false);
 
 
         _distanceToFace = Camera.main.ScreenToWorldPoint(Input.mousePosition);

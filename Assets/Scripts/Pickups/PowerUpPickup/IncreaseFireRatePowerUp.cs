@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IncreaseFireRatePowerUp
+public class IncreaseFireRatePowerUp : PowerUpPickUp
 {
     private float _fireRateIncreaseFactor;
 
@@ -17,7 +17,7 @@ public class IncreaseFireRatePowerUp
         _fireRateIncreaseFactor = fireRateIncreaseFactor; 
     }
 
-    public void ActivatePowerUp(Unit unit)
+    public override void ActivatePowerUp(Unit unit)
     {
         if ((weaponSystem = unit.GetComponentInChildren<PlayerWeaponSystem>()) == null)
             return;
@@ -29,7 +29,7 @@ public class IncreaseFireRatePowerUp
         weaponSystem.FireRateIncreaseFactor = _fireRateIncreaseFactor;
     }
 
-    public void DeactivatePowerUp(Unit unit)
+    public override void DeactivatePowerUp(Unit unit)
     {
         if (weaponSystem != null)
         {

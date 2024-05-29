@@ -24,4 +24,7 @@ public class EventManager : ScriptableObject
     public Action<float, Asteroid> OnAstreroidSplitEvent;
     public Action<Vector2, float> OnAsteroidDestroyedEffectEvent;
 
+    //Player Input
+    public Action<bool> IsThrusting;
+
 }

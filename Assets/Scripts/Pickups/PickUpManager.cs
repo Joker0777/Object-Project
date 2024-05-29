@@ -21,9 +21,7 @@ public class PickUpManager : MonoBehaviour
     [SerializeField] int _healthAmount;
 
     //powerUp pickups
-    private IncreaseFireRatePowerUp _increaseFireRatePowerUp;
-    private IncreaseSpeedPowerUP _increaseSpeedPowerUp;
-    private Action<Unit> _currentDeactivateFunction;
+    private PowerUpPickUp _currentPowerUpPickUp;
 
     //powerup timer
     [SerializeField] protected float _powerUpTimerLength = 10;
@@ -34,7 +32,7 @@ public class PickUpManager : MonoBehaviour
     //player systems references
     private PlayerWeaponSystem playerWeaponSystem;
     private MovmentSystem movmentSystem;
-    private ShieldSystem shieldSystem;
+  
 
     private void Awake()
     {
@@ -51,9 +49,6 @@ public class PickUpManager : MonoBehaviour
 
     private void Start()
     {
-        _increaseFireRatePowerUp = new IncreaseFireRatePowerUp();
-        _increaseSpeedPowerUp = new IncreaseSpeedPowerUP();
-
         _PowerUpTimer = new Timer(_powerUpTimerLength);
 
         playerWeaponSystem = _playerUnit.GetComponentInChildren<PlayerWeaponSystem>();
@@ -75,7 +70,7 @@ public class PickUpManager : MonoBehaviour
             if (!_PowerUpTimer.IsRunningBasic())
             {
                 _powerUpTimerRunning = false;
-                _currentDeactivateFunction(_playerUnit);
+                _currentPowerUpPickUp.DeactivatePowerUp(_playerUnit);
                 _playerUnit.EventManager.OnUIChange?.Invoke(UIElementType.PickUpTimer, "0");
             }
         }
@@ -97,10 +92,6 @@ public class PickUpManager : MonoBehaviour
                 CollectHealth();
                 break;
 
-            case PickupType.ShieldPickup://to be implemented
-
-                break;
-
             case PickupType.MissleWeaponPickup:            
                 CollectWeapon(_missleWeapon);
                 break;
@@ -113,35 +104,29 @@ public class PickUpManager : MonoBehaviour
                 CollectWeapon(_plasmaWeapon);
                 break;
 
-            case PickupType.ShieldPowerUpPickup://to be implemented
-                
+            case PickupType.ShieldPowerUpPickup:
+                CollectPowerUp(new ShieldPowerUp());
                 break;
 
             case PickupType.IncreaseFireRatePickup:
-                CollectPowerUp(_increaseFireRatePowerUp.ActivatePowerUp, _increaseFireRatePowerUp.DeactivatePowerUp);   
+                CollectPowerUp(new IncreaseFireRatePowerUp());   
                 break;
 
             case PickupType.IncreaseSpeedPickup:
-                CollectPowerUp(_increaseSpeedPowerUp.ActivatePowerUp, _increaseSpeedPowerUp.DeactivatePowerUp);
+                CollectPowerUp(new IncreaseSpeedPowerUP());
                 break;
         }
     }
 
 
     private void CollectWeapon(Weapon weapon)
-    {
-        if(playerWeaponSystem != null)
-        {
-            playerWeaponSystem.AddWeapon(weapon);
-        }
+    {    
+        playerWeaponSystem?.AddWeapon(weapon);      
     }
 
     private void CollectExplosive()
     {
-        if(playerWeaponSystem != null)
-        {
-            playerWeaponSystem.AddSecondaryAmmo();
-        }
+        playerWeaponSystem?.AddSecondaryAmmo();     
     }
 
     private void CollectHealth()
@@ -149,23 +134,21 @@ public class PickUpManager : MonoBehaviour
         _playerUnit.HealthIncrease(_healthAmount);
     }
 
-    private void CollectPowerUp(Action<Unit> activatePowerUpFunction, Action<Unit> deactivatePowerUpFuntion)
+    private void CollectPowerUp(PowerUpPickUp powerUpPickUp)
     {
-        if (activatePowerUpFunction == null) return;
+        if (powerUpPickUp == null) return;
 
-        if (_powerUpTimerRunning && _currentDeactivateFunction != null)
+        if (_powerUpTimerRunning)
         {
-            _currentDeactivateFunction(_playerUnit);
+            _currentPowerUpPickUp?.DeactivatePowerUp(_playerUnit);
             _PowerUpTimer.StopTimerBasic();
             _powerUpTimerRunning = false;
         }
-              
-        _currentDeactivateFunction = deactivatePowerUpFuntion;
+             
+        _currentPowerUpPickUp = powerUpPickUp;
+        _currentPowerUpPickUp.ActivatePowerUp(_playerUnit);
         
-        activatePowerUpFunction(_playerUnit);
-
         _PowerUpTimer.StartTimerBasic();
-
         _powerUpTimerRunning = true;
     }
 

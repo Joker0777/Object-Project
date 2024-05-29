@@ -22,6 +22,7 @@ public class AsteroidSpawner : MonoBehaviour
 
     private void Awake()
     {
+
         _asteroidDestroyedEffect = GetComponentsInChildren<ParticleSystem>();
         _asteroidPool = GetComponentInChildren<AsteroidPool>();
         
@@ -34,14 +35,14 @@ public class AsteroidSpawner : MonoBehaviour
 
     private void OnEnable()
     {
-        _eventManager.OnAstreroidSplitEvent += CreateSplit;
+        _eventManager.OnAstreroidSplitEvent += BreakAsteroid;
         _eventManager.OnAsteroidDestroyedEffectEvent += AsteroidExplodeEffect;
 
     }
 
     private void OnDisable() 
     { 
-        _eventManager.OnAstreroidSplitEvent -= CreateSplit;
+        _eventManager.OnAstreroidSplitEvent -= BreakAsteroid;
         _eventManager.OnAsteroidDestroyedEffectEvent -= AsteroidExplodeEffect;
     }
     private void Spawn()
@@ -74,18 +75,6 @@ public class AsteroidSpawner : MonoBehaviour
         asteroid.SetTrajectory(rotation * -spawnDirection);
     }
 
-    private void CreateSplit(float size, Asteroid asteroid)
-    {
-        StartCoroutine(DelayBreak(size, asteroid));
-    }
-
-    IEnumerator DelayBreak(float size, Asteroid asteroid)
-    {
-        
-        yield return new WaitForSeconds(.1f);
-
-        BreakAsteroid(size, asteroid);
-    }
 
     private void BreakAsteroid(float size, Asteroid mainAsteroid)
     {
@@ -111,22 +100,22 @@ public class AsteroidSpawner : MonoBehaviour
         
        // if (_explosionPrefab != null)
        // {
-            GameObject particleEffect = Instantiate(_explosionPrefab, pos, Quaternion.identity);
+        //    GameObject particleEffect = Instantiate(_explosionPrefab, pos, Quaternion.identity);
 
-            ParticleSystem[] particleSystem = particleEffect.GetComponents<ParticleSystem>();
-            if (particleSystem != null)
-            {
-                foreach (var particleSystems in _asteroidDestroyedEffect)
-                {
-                    float scaleFactor = Mathf.Lerp(0.1f, 0.2f, (size - 0.5f) / 1f);
-                    var main = particleSystems.main;
-                    main.startSize = scaleFactor;
+       //     ParticleSystem[] particleSystem = particleEffect.GetComponents<ParticleSystem>();
+        //    if (particleSystem != null)
+       //     {
+          //      foreach (var particleSystems in _asteroidDestroyedEffect)
+            //    {
+            //        float scaleFactor = Mathf.Lerp(0.1f, 0.2f, (size - 0.5f) / 1f);
+          //          var main = particleSystems.main;
+           //         main.startSize = scaleFactor;
 
-                    particleSystems.transform.position = pos;
-                    particleSystems.Play();
-               }
-            }
-            Destroy(particleEffect, 2f);
+          //          particleSystems.transform.position = pos;
+           ///         particleSystems.Play();
+             //  }
+          // }
+        //   Destroy(particleEffect, 2f);
         }
 
     

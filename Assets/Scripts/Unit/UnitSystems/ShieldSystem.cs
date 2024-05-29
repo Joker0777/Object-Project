@@ -1,91 +1,86 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class ShieldSystem : UnitSystems
+public class ShieldSystem : MonoBehaviour
 {
-    [SerializeField]
-    private float _asteroidDamage = 25f;
 
     [SerializeField]
-    private float _maxTrasparency = .8f;
-
-    private float _maxShieldValue = 100f;
-    private float _currentShieldValue;
-
+    private float _initialTrasparency = 0f;
+    [SerializeField]
+    private float _endTransparency = 1f;
+    [SerializeField]
+    private float _fadeDuration = 2f;
+    [SerializeField]
+    private int _shieldDamage = 20;
 
     private SpriteRenderer _shieldSprite;
-    private Color _shieldColor;
+    private Color _endColor;
 
     
-    protected override void Awake()
+
+    protected void Awake()
     {
-        base.Awake();
         _shieldSprite = GetComponent<SpriteRenderer>();
+        _endColor = _shieldSprite.color;
+        SetTransparencyColor(0f, _endColor);
+
     }
 
-    protected override void Start()
+ 
+    public void ActivateShield()
     {
-        base.Start();
-        _shieldColor = _shieldSprite.color;
-        _currentShieldValue = 0f;
-        SetTransparencyColor(0f, _shieldSprite.color);
+        SetTransparencyColor(_initialTrasparency, _endColor);
+        StartCoroutine(FadeShield(_initialTrasparency, _endTransparency, false)); ;
     }
 
-    private void DamageShield()
+    public void DisableShield()
     {
-        _currentShieldValue -= _asteroidDamage;
+        SetTransparencyColor(_endTransparency, _endColor);
+        StartCoroutine(FadeShield(_endTransparency, _initialTrasparency, true));
+    }
 
-        StartCoroutine(FadeShield());
+
+    IEnumerator FadeShield(float initialTransparency, float endTransparency, bool disable)
+    {
+
+        Debug.Log("In fade shield");
         
-        if (_currentShieldValue <= 0) 
-        { 
-            this.gameObject.SetActive(false);
-        }    
-    }
-
-    IEnumerator FadeShield()
-    {
-        float startingTransparency = _shieldSprite.color.a;
-        float endingTransparency = Mathf.Lerp(0, _maxTrasparency, _currentShieldValue/_maxShieldValue);
-
-        Color startColor = _shieldSprite.color;
-        Color finalColor = Color.red;
-        Color endColor = Color.Lerp(startColor, finalColor, _currentShieldValue / _maxShieldValue);
-
         float currentTimer = 0;
-        float duration = 2f;
+   
 
 
-        while(currentTimer < duration)
+        while(currentTimer < _fadeDuration)
         {
-            float transparency = Mathf.Lerp(startingTransparency, endingTransparency, currentTimer / duration);
-            Color currentColor = Color.Lerp(startColor, endColor, currentTimer / duration);
+            float transparency = Mathf.Lerp(initialTransparency, endTransparency, currentTimer / _fadeDuration);
+    
             
-            SetTransparencyColor(transparency, currentColor);
+            SetTransparencyColor(transparency, _endColor);
 
             currentTimer += Time.deltaTime;
             yield return null;
         }
 
-        SetTransparencyColor(endingTransparency, endColor);
+        SetTransparencyColor(endTransparency, _endColor);
+
+        if (disable) 
+        {
+            gameObject.SetActive(false);
+        }
+  
     }
 
     private void SetTransparencyColor(float transparency, Color color)
     {
         Color newColor = color;
         newColor.a = transparency;
-        _shieldSprite.color = newColor;
-        
+        _shieldSprite.color = newColor;      
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Asteroid")
-        {
-            DamageShield();
-        }
+
+        collision.collider.attachedRigidbody.GetComponent<IDamagable>().DamageTaken(_shieldDamage);
     }
-
-
 }
