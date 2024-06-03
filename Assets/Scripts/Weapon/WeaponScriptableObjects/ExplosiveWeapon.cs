@@ -16,7 +16,7 @@ public class ExplosiveWeapon : Weapon
     private void NukeExplode(Vector2 position)
     {
         Debug.Log("In Nuke Explode");
-        GameManager.Instance.DestoyAllEnemyUnits();
+     //   GameManager.Instance.DestoyAllEnemyUnits();
         PickUpManager.instance.DestoyAllPickUps();
     }
     

@@ -75,8 +75,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51809d1897dd7b74da9747ca751aab6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _turnSpeed: 3
-  _speed: 4
+  _turnSpeed: 4
+  _speed: 8
 --- !u!1 &7309586049702947830
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,11 +236,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectRange: 15
-  _stopRange: 3
-  _playerAttackRange: 4
-  _asteroidAttackRange: 4
-  angleThresholdWeapon1: 0.9
+  _stopRange: 2
+  _playerAttackRange: 7
+  obsticleAvoidanceRange: 4
+  angleThresholdWeapon1: 0.8
   angleThresholdWeapon2: 0
+  ignoreObsticles:
+    serializedVersion: 2
+    m_Bits: 256
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!50 &5586700685515999371
 Rigidbody2D:
   serializedVersion: 4

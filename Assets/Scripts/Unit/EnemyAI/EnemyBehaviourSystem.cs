@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 
+
 public class EnemyBehaviourSystem : UnitSystems
 {
 
@@ -19,14 +20,16 @@ public class EnemyBehaviourSystem : UnitSystems
     [SerializeField] protected float _playerAttackRange = 5;
    // [SerializeField] protected float _asteroidAttackRange = 2;
   //  [SerializeField] protected float _targetEvadeRange = 2;
-    [SerializeField] protected float asteroidAvoidanceRange = 10f;
+    [SerializeField] protected float obsticleAvoidanceRange = 10f;
 
     [SerializeField]float angleThresholdWeapon1 = 0.9f;
     [SerializeField] float angleThresholdWeapon2 = .9f;
 
     protected EnemyState _currentState = EnemyState.Patrol;
 
-    [SerializeField]protected GameObject _playerTarget;
+    protected GameObject _target;
+    [SerializeField] protected LayerMask ignoreObsticles;
+    [SerializeField] protected LayerMask _targetLayer;
   //  protected GameObject _closestAsteroid;
   //  protected GameObject _currentTarget;
 
@@ -37,6 +40,7 @@ public class EnemyBehaviourSystem : UnitSystems
     protected Vector2 directionToMove;
     protected Vector2 currentDirection;
  //   protected Vector2 directionAwayFromTarget;
+
 
     protected override void Awake()
     {
@@ -59,6 +63,11 @@ public class EnemyBehaviourSystem : UnitSystems
 
     protected virtual void Update()
     {
+        if(_target == null)
+        {
+            FindTarget();
+        }
+        
         UpdateMovement();
 
         switch (_currentState)
@@ -92,9 +101,26 @@ public class EnemyBehaviourSystem : UnitSystems
         weapon?.SwitchWeapon(1);
     }
 
-    protected bool InRange(float range, GameObject target)
+    
+    
+    protected bool InRangeOfTarget(float range, GameObject target)
     {
         return target != null && Vector2.Distance(target.transform.position, transform.position) < range;
+    }
+
+    protected bool InLineWtihTarget(GameObject target, float inLineThreshold)
+    {
+        Vector2 targetDirection = (target.transform.position - transform.position).normalized;
+        return Vector2.Dot(transform.up, targetDirection) >= inLineThreshold;
+    }
+
+    protected void FindTarget()
+    {      
+        var colliders = Physics2D.OverlapCircleAll(transform.position, _detectRange, _targetLayer);
+        if(colliders != null && colliders.Length == 1)
+        {                
+              _target = colliders[0].gameObject;       
+        }
     }
 
     protected void MoveAwayFromTarget(GameObject target)
@@ -135,11 +161,9 @@ public class EnemyBehaviourSystem : UnitSystems
   
     protected void Patrol()
     {
-        Debug.Log("In Patrol");
-        
         moveInput = Vector2.zero;
 
-        if (InRange(_detectRange, _playerTarget))
+        if (InRangeOfTarget(_detectRange, _target))
         {
             _currentState = EnemyState.DetectTarget;         
         }
@@ -149,12 +173,12 @@ public class EnemyBehaviourSystem : UnitSystems
     {
         FollowTarget();
 
-        if(!InRange(_attackRange, _playerTarget)) 
+        if(!InRangeOfTarget(_attackRange, _target)) 
         {
             _currentState = EnemyState.DetectTarget;
             weapon?.SwitchWeapon(1);
         }
-        else if (_targetToWeaponForwardDot >= angleThresholdWeapon1)
+        else if (InLineWtihTarget(_target, angleThresholdWeapon1))
         {
             weapon?.FireWeapon();
         }
@@ -164,18 +188,17 @@ public class EnemyBehaviourSystem : UnitSystems
     {
         FollowTarget();
 
-        if (weapon?.WeaponCount > 1 && _targetToWeaponForwardDot >= angleThresholdWeapon2)
+        if (weapon?.WeaponCount > 1 && InLineWtihTarget(_target, angleThresholdWeapon2))
         {
             weapon?.FireWeapon();
         }
 
-
-        if (InRange(_attackRange, _playerTarget))
+        if (InRangeOfTarget(_attackRange, _target))
         {
             _currentState = EnemyState.AttackTarget;
             weapon?.SwitchWeapon(0);
         }
-        else if (!InRange(_detectRange, _playerTarget))
+        else if (!InRangeOfTarget(_detectRange, _target))
         {
             _currentState = EnemyState.Patrol;
         }
@@ -183,29 +206,30 @@ public class EnemyBehaviourSystem : UnitSystems
 
     protected void FollowTarget()
     {
-        if (_playerTarget == null) return;
+        if (_target == null) return;
 
         List<GameObject> obsticles = GetObsticlesInRange();
-        Vector2 playerDirection = (_playerTarget.transform.position - transform.position).normalized;
+        Vector2 playerDirection = (_target.transform.position - transform.position).normalized;
         Vector2 collisionAvoidenceOffset = GetAvoidenceOffset(obsticles);
         Vector2 combinedDirection = (playerDirection + collisionAvoidenceOffset).normalized;
 
         directionToMove = combinedDirection;
 
-        moveInput = InRange(_stopRange, _playerTarget) ? Vector2.zero : Vector2.up;
+        moveInput = InRangeOfTarget(_stopRange, _target) ? Vector2.zero : Vector2.up;
 
-        _targetToWeaponForwardDot = Vector2.Dot(transform.up, directionToMove);
+      //  _targetToWeaponForwardDot = Vector2.Dot(transform.up, directionToMove);
 
     }
 
     private List<GameObject> GetObsticlesInRange()
     {
-        var colliders = Physics2D.OverlapCircleAll(transform.position, asteroidAvoidanceRange);
+        var colliders = Physics2D.OverlapCircleAll(transform.position, obsticleAvoidanceRange, ~ignoreObsticles.value);
         var obsticles = new List<GameObject>();
 
         foreach (var collider in colliders)
         {
-            if (collider.gameObject != gameObject && !collider.CompareTag("Player"))
+            
+            if (collider.gameObject != gameObject && collider.gameObject != _target)
             {
                 obsticles.Add(collider.gameObject);
             }
@@ -218,6 +242,8 @@ public class EnemyBehaviourSystem : UnitSystems
     {
         Vector2 avoidanceOffset = Vector2.zero;
 
+        //float minInfluenceFactor = 0.1f;
+
         foreach (var obsticles in Obsticles)
         {
             Vector2 awayFromObsticle = (transform.position - obsticles.transform.position).normalized;
@@ -226,21 +252,26 @@ public class EnemyBehaviourSystem : UnitSystems
             Vector2 perpendicularLeft = new Vector2(-toObsticle.y, toObsticle.x);
             Vector2 perpendicularRight = new Vector2(toObsticle.y, -toObsticle.x);
 
-            float dotProduct = Vector2.Dot(transform.right, toObsticle);
+            float dotProductSide = Vector2.Dot(transform.right, toObsticle);
+            float dotProductFront = Vector2.Dot(transform.up, toObsticle);
 
-            Vector2 sideAvoidance;
+            Vector2 sideAvoidance = Vector2.zero;
 
-            if (dotProduct > 0) 
+             //if ((dotProductSide > 0 && dotProductFront > 0) || (dotProductSide < 0 && dotProductFront < 0))
+             if (dotProductSide > 0 && dotProductFront > 0)
             {
                 sideAvoidance = perpendicularLeft; 
             }
-            else 
+            // else if((dotProductSide < 0 && dotProductFront > 0) ||(dotProductSide > 0 && dotProductFront < 0))
+             else if(dotProductSide < 0 && dotProductFront > 0)
             {
                 sideAvoidance = perpendicularRight; 
             }
-
-            avoidanceOffset += (awayFromObsticle + sideAvoidance) / Vector2.Distance(transform.position, obsticles.transform.position);
+            //float influenceFactor = Mathf.Lerp(1f, minInfluenceFactor, Vector2.Distance(transform.position, obsticles.transform.position) / asteroidAvoidanceRange);
+            avoidanceOffset += (awayFromObsticle + sideAvoidance)  / Vector2.Distance(transform.position, obsticles.transform.position);
+       
         }
+        Debug.Log(avoidanceOffset.ToString());
 
         return avoidanceOffset.normalized;
           

@@ -8,5 +8,6 @@ public enum UIElementType
     Bomb,
     Weapon,
     PickUpTimer,
+    pickUp,
     Score
 }

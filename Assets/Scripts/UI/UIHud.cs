@@ -8,7 +8,6 @@ public class UIHud : MonoBehaviour
 
     [SerializeField] EventManager _eventManager;
 
-
     private void Awake()
     {
         _uiElements = GetComponentsInChildren<UIElement>();    
@@ -25,14 +24,12 @@ public class UIHud : MonoBehaviour
     }
 
     private void UpdateUI(UIElementType elementType, string UIText)
-    {
-       // Debug.Log("In UpdateUI hud   UI text " + UIText);
-        
+    {       
         for(int i = 0; i< _uiElements.Length; i++) 
         {
             if (_uiElements[i].ElementType == elementType)
             {
-                _uiElements[i].UpdatedUIText = UIText;
+                _uiElements[i].SetUI(UIText);
             }
         }
     }

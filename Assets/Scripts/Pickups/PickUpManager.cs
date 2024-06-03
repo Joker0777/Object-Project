@@ -55,7 +55,7 @@ public class PickUpManager : MonoBehaviour
         movmentSystem = _playerUnit.GetComponentInChildren<MovmentSystem>();
 
         _playerUnit.EventManager.OnUIChange?.Invoke(UIElementType.PickUpTimer, "0");
-
+        _playerUnit.EventManager.OnUIChange?.Invoke(UIElementType.pickUp, "EmptyPowerUp");
 
     }
 
@@ -66,12 +66,16 @@ public class PickUpManager : MonoBehaviour
             _PowerUpTimer.UpdateTimerBasic(Time.deltaTime);
 
             _playerUnit.EventManager.OnUIChange?.Invoke(UIElementType.PickUpTimer, Mathf.CeilToInt(_PowerUpTimer.TimeRemaining).ToString());
+            _playerUnit.EventManager.OnUIChange?.Invoke(UIElementType.pickUp,_currentPowerUpPickUp.ToString());
+
+            Debug.Log(_currentPowerUpPickUp.ToString());
 
             if (!_PowerUpTimer.IsRunningBasic())
             {
                 _powerUpTimerRunning = false;
                 _currentPowerUpPickUp.DeactivatePowerUp(_playerUnit);
                 _playerUnit.EventManager.OnUIChange?.Invoke(UIElementType.PickUpTimer, "0");
+                _playerUnit.EventManager.OnUIChange?.Invoke(UIElementType.pickUp, "EmptyPowerUp");
             }
         }
     }
@@ -116,6 +120,8 @@ public class PickUpManager : MonoBehaviour
                 CollectPowerUp(new IncreaseSpeedPowerUP());
                 break;
         }
+
+        
     }
 
 
@@ -147,6 +153,8 @@ public class PickUpManager : MonoBehaviour
              
         _currentPowerUpPickUp = powerUpPickUp;
         _currentPowerUpPickUp.ActivatePowerUp(_playerUnit);
+
+     //   Debug.Log(_currentPowerUpPickUp.ToString());
         
         _PowerUpTimer.StartTimerBasic();
         _powerUpTimerRunning = true;

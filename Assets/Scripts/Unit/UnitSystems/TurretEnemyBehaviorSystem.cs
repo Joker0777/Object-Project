@@ -8,21 +8,13 @@ public class TurretEnemyBehaviorSystem : EnemyBehaviourSystem
 
     protected override void Update()
     {
-  //      if (_currentState == EnemyState.AttackTarget)
-   //     {
-     //       foreach (TurretController controller in _turrets)
-     //       {
-      //          controller.RotateTurretToTarget(directionToMove);
-     //       }
-     //   }
-     //   else
-     //   {
-      //      foreach(TurretController controller in _turrets)
-     //       {
-         //       controller.RotateTurretToTarget(unit.transform.forward);
-      //      }
-      //  }
-        
+        if (_currentState == EnemyState.AttackTarget)
+        {
+            foreach (TurretController controller in _turrets)
+            {
+                controller.RotateTurretToTarget(directionToMove);
+            }
+        }     
         base.Update();
     }
 

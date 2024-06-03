@@ -12,6 +12,7 @@ public enum PickupType
     ExplosivePickup,
     IncreaseFireRatePickup,
     IncreaseSpeedPickup,
-    ShieldPowerUpPickup
+    ShieldPowerUpPickup,
+    DefaultWeapon
 
 }

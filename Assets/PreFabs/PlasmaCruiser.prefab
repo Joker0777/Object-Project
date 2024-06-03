@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _turnSpeed: 3
-  _speed: 2
+  _speed: 3
 --- !u!1 &7309586049702947830
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,11 +205,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectRange: 15
-  _stopRange: 4
-  _playerAttackRange: 5
-  _asteroidAttackRange: 4
+  _stopRange: 3
+  _playerAttackRange: 6
+  obsticleAvoidanceRange: 4
   angleThresholdWeapon1: 0.9
   angleThresholdWeapon2: 0
+  ignoreObsticles:
+    serializedVersion: 2
+    m_Bits: 256
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!50 &5586700685515999371
 Rigidbody2D:
   serializedVersion: 4
