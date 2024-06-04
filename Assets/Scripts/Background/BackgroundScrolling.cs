@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class BackgroundScrolling : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private float scrollSpeedFactor;
+
+    private Transform _mainCameraTransform;
+    private Vector3 lastCameraPosition;
+
     void Start()
-    {
-        
+    {      
+        _mainCameraTransform = Camera.main.transform;
+        lastCameraPosition = transform.position;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        Vector3 movmentDirection = (_mainCameraTransform.position - lastCameraPosition).normalized;
+        transform.position += new Vector3(movmentDirection.x * scrollSpeedFactor, movmentDirection.y * scrollSpeedFactor, movmentDirection.z);
+        lastCameraPosition = _mainCameraTransform.position;
     }
 }

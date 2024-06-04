@@ -97,7 +97,7 @@ public class Asteroid : MonoBehaviour, IDamagable
 
     public void SetTrajectory(Vector2 direction)
     {
-        _rigidbody.AddForce(direction * _asteroidSpeed);
+        _rigidbody.AddForce(direction * _asteroidSpeed, ForceMode2D.Impulse);
         _rigidbody.AddTorque(Random.Range(-_torqueForce, _torqueForce));
     }
 

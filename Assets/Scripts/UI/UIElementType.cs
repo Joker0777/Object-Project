@@ -9,5 +9,7 @@ public enum UIElementType
     Weapon,
     PickUpTimer,
     pickUp,
-    Score
+    Score,
+    WaveEnemies,
+    Lives
 }

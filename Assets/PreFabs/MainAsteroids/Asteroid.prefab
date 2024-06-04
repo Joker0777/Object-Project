@@ -47,7 +47,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 3
+  m_Mass: 4
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 0
@@ -129,7 +129,7 @@ MonoBehaviour:
   _asteroidSize: 1
   _asteroidMinSize: 0.5
   _asteroidMazSize: 1.5
-  _asteroidSpeed: 25
+  _asteroidSpeed: 0.5
   _torqueForce: 15
   maxLife: 20
   _startingHealth: 20

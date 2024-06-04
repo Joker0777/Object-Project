@@ -129,7 +129,7 @@ MonoBehaviour:
   _asteroidSize: 1
   _asteroidMinSize: 0.5
   _asteroidMazSize: 1.5
-  _asteroidSpeed: 20
+  _asteroidSpeed: 0.2
   _torqueForce: 10
   maxLife: 20
   _startingHealth: 20

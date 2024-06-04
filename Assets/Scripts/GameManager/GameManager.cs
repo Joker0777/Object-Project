@@ -77,7 +77,8 @@ public class GameManager : MonoBehaviour
 
             Unit newShip = Instantiate(unit, spawnPoint, Quaternion.identity);
         _currentWaveUnits.Add(newShip.gameObject);
-         //  _enemyUnits.Add(newShip.gameObject);       
+
+        //  _enemyUnits.Add(newShip.gameObject);       
     }
     private IEnumerator StartNextWave()
     {
@@ -96,14 +97,15 @@ public class GameManager : MonoBehaviour
         Debug.Log("In spawn enemy wave");
         
        List<Unit> newWave = wave.GetEnemyUnits();
+        _eventManager.OnUIChange.Invoke(UIElementType.WaveEnemies, newWave.Count.ToString());
 
-        while(newWave.Count > 0) 
+        while (newWave.Count > 0) 
         { 
             Unit nextUnit = newWave[0];
             if (nextUnit != null)
             {
                 SpawnEnemy(nextUnit);
-                yield return new WaitForSeconds(wave.SpawnInterval);
+               // yield return new WaitForSeconds(wave.SpawnInterval);
             }
             newWave.RemoveAt(0);
         }
@@ -119,6 +121,7 @@ public class GameManager : MonoBehaviour
     {
 
         _currentWaveUnits.RemoveAll(unit => unit == null);
+        _eventManager.OnUIChange.Invoke(UIElementType.WaveEnemies, _currentWaveUnits.Count.ToString());
         return _currentWaveUnits.Count == 0;
     }
 }
