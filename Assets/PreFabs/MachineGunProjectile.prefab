@@ -99,7 +99,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e916ecd9f0402b4eaff3a6070ef048b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventManager: {fileID: 11400000, guid: 415665ee65827384bac5c210591b82dd, type: 2}
   _projectileTimerLength: 6
+  _particleEffectScale: 0.2
 --- !u!61 &1096188933126353650
 BoxCollider2D:
   m_ObjectHideFlags: 0

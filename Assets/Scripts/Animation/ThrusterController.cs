@@ -27,6 +27,11 @@ public class ThrusterController : MonoBehaviour
     protected void ThrusterAnimation(bool thrustingState)
     {
         _animator.SetBool("IsThrusting", thrustingState);
+        if (thrustingState )
+        {
+            _eventManager.OnPlayParticleEffect.Invoke("ThrusterTail", transform.position, 1f);
+        }
+
     }
 
 

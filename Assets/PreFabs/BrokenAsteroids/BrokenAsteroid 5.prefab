@@ -126,14 +126,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea2003cfd50e5a141b36b544f1f1bd12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventManager: {fileID: 11400000, guid: 415665ee65827384bac5c210591b82dd, type: 2}
+  _unitType: 2
+  _maxHealth: 20
   _asteroidSize: 1
   _asteroidMinSize: 0.5
-  _asteroidMazSize: 1.5
+  _asteroidMaxSize: 1.5
   _asteroidSpeed: 0.2
   _torqueForce: 10
-  maxLife: 20
   _startingHealth: 20
-  _eventManager: {fileID: 11400000, guid: 415665ee65827384bac5c210591b82dd, type: 2}
+  maxLife: 20
   _asteroidID: 
 --- !u!60 &8625948063026875414
 PolygonCollider2D:

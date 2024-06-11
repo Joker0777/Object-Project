@@ -16,30 +16,22 @@ public class EnemyBehaviourSystem : UnitSystems
 
     [SerializeField] protected float _detectRange = 7;
     [SerializeField] protected float _stopRange = 1;
-
-    [SerializeField] protected float _playerAttackRange = 5;
-   // [SerializeField] protected float _asteroidAttackRange = 2;
-  //  [SerializeField] protected float _targetEvadeRange = 2;
+    [SerializeField] protected float _playerAttackRange = 7;
     [SerializeField] protected float obsticleAvoidanceRange = 10f;
 
     [SerializeField]float angleThresholdWeapon1 = 0.9f;
-    [SerializeField] float angleThresholdWeapon2 = .9f;
 
     protected EnemyState _currentState = EnemyState.Patrol;
 
     protected GameObject _target;
     [SerializeField] protected LayerMask ignoreObsticles;
     [SerializeField] protected LayerMask _targetLayer;
-  //  protected GameObject _closestAsteroid;
-  //  protected GameObject _currentTarget;
 
     protected float _targetToWeaponForwardDot;
-   // protected float angleToTarget;
     protected float _angleToTurn;
     protected Vector2 moveInput;
     protected Vector2 directionToMove;
     protected Vector2 currentDirection;
- //   protected Vector2 directionAwayFromTarget;
 
 
     protected override void Awake()
@@ -59,8 +51,6 @@ public class EnemyBehaviourSystem : UnitSystems
         }
     }
    
-
-
     protected virtual void Update()
     {
         if(_target == null)
@@ -90,18 +80,10 @@ public class EnemyBehaviourSystem : UnitSystems
     {
         currentDirection = Vector2.Lerp(currentDirection, directionToMove, Time.deltaTime * 5f);
         _angleToTurn = Mathf.Atan2(currentDirection.y, currentDirection.x) * Mathf.Rad2Deg;
-      //  angleToTarget = Vector2.Angle(transform.up, currentDirection);
 
         movement?.Move(moveInput, _angleToTurn);
     }
 
-    protected override void Start()
-    {
-        base.Start();
-        weapon?.SwitchWeapon(1);
-    }
-
-    
     
     protected bool InRangeOfTarget(float range, GameObject target)
     {
@@ -176,7 +158,6 @@ public class EnemyBehaviourSystem : UnitSystems
         if(!InRangeOfTarget(_attackRange, _target)) 
         {
             _currentState = EnemyState.DetectTarget;
-            weapon?.SwitchWeapon(1);
         }
         else if (InLineWtihTarget(_target, angleThresholdWeapon1))
         {
@@ -188,15 +169,9 @@ public class EnemyBehaviourSystem : UnitSystems
     {
         FollowTarget();
 
-        if (weapon?.WeaponCount > 1 && InLineWtihTarget(_target, angleThresholdWeapon2))
-        {
-            weapon?.FireWeapon();
-        }
-
         if (InRangeOfTarget(_attackRange, _target))
         {
             _currentState = EnemyState.AttackTarget;
-            weapon?.SwitchWeapon(0);
         }
         else if (!InRangeOfTarget(_detectRange, _target))
         {
@@ -216,9 +191,6 @@ public class EnemyBehaviourSystem : UnitSystems
         directionToMove = combinedDirection;
 
         moveInput = InRangeOfTarget(_stopRange, _target) ? Vector2.zero : Vector2.up;
-
-      //  _targetToWeaponForwardDot = Vector2.Dot(transform.up, directionToMove);
-
     }
 
     private List<GameObject> GetObsticlesInRange()
@@ -241,8 +213,6 @@ public class EnemyBehaviourSystem : UnitSystems
     private Vector2 GetAvoidenceOffset(List<GameObject> Obsticles)
     {
         Vector2 avoidanceOffset = Vector2.zero;
-
-        //float minInfluenceFactor = 0.1f;
 
         foreach (var obsticles in Obsticles)
         {
@@ -273,7 +243,6 @@ public class EnemyBehaviourSystem : UnitSystems
         }
         Debug.Log(avoidanceOffset.ToString());
 
-        return avoidanceOffset.normalized;
-          
+        return avoidanceOffset.normalized;          
     }
 }

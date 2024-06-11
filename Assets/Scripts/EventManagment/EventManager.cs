@@ -22,9 +22,14 @@ public class EventManager : ScriptableObject
 
     //Asteroids
     public Action<float, Asteroid> OnAstreroidSplitEvent;
-    public Action<Vector2, float> OnAsteroidDestroyedEffectEvent;
 
     //Player Input
     public Action<bool> IsThrusting;
+
+    //ParticleSystems
+    public Action<string, Vector2, float> OnPlayParticleEffect;
+    public Action<string, Vector2> OnWeaponHitParticleEffect;
+    public Action<string, Vector2> OnExpolsiveWeaponDetonatedParticleEffect;
+    public Action<string, Vector2> OnPickupAddedParticleEffect;
 
 }

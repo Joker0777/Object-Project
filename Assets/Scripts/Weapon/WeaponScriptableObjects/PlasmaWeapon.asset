@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36a423f504eb5f047aabbc2f71d8b881, type: 3}
   m_Name: PlasmaWeapon
   m_EditorClassIdentifier: 
-  _weaponType: PlasmaWeapon
+  _weaponObjectPoolTag: PlasmaWeapon
   _weaponCooldown: 1
   _accuracy: 1
   _weaponSpeed: 100

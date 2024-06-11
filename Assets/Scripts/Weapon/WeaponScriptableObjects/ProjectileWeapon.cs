@@ -13,13 +13,13 @@ public class ProjectileWeapon : Weapon
     [SerializeField] protected int _weaponDamage;
     [SerializeField] protected string _targetTag;
 
+
     [SerializeField] protected Projectile _projectilePrefab;
 
     [Header("Object Pool Setup")]
     [SerializeField] protected int _poolSize = 10;
-   // [SerializeField] protected string _projectilePoolTag;
+   
 
- 
 
     private float _maxAngle = 45f;
 
@@ -27,17 +27,14 @@ public class ProjectileWeapon : Weapon
 
 
 
-
-
-
     public override void ShootWeapon(Vector2 position, Vector2 direction, Quaternion rotation, string targetTag, Transform parent)
     {
-        _nextProjectile = ObjectPoolSystem<Projectile>.Instance.GetObject(_weaponType);
+        _nextProjectile = ObjectPoolSystem<Projectile>.Instance.GetObject(_weaponObjectPoolTag);
 
          if (_nextProjectile == null)
          {
-            ObjectPoolSystem<Projectile>.Instance.AddPool(_poolSize, _weaponType, _projectilePrefab, parent);
-            _nextProjectile = ObjectPoolSystem<Projectile>.Instance.GetObject(_weaponType);
+            ObjectPoolSystem<Projectile>.Instance.AddPool(_poolSize, _weaponObjectPoolTag, _projectilePrefab, parent);
+            _nextProjectile = ObjectPoolSystem<Projectile>.Instance.GetObject(_weaponObjectPoolTag);
         }
 
          _nextProjectile.transform.position = position;

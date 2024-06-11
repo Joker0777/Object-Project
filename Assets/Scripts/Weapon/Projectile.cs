@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    [SerializeField] EventManager eventManager;
     [SerializeField] float _projectileTimerLength = 6f;
+    [SerializeField] float _particleEffectScale = 1f;
 
     protected float _projectileSpeed;
     protected int _projectileDamage;
@@ -47,12 +49,20 @@ public class Projectile : MonoBehaviour
 
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
-    {     
+    {
+        Vector3 weaponHit = collision.contacts[0].point;
+        
         if (collision.gameObject.CompareTag(_targetTag) || collision.gameObject.CompareTag("Asteroid"))
         {
             collision.collider.attachedRigidbody.GetComponent<IDamagable>().DamageTaken(_projectileDamage);
+
         }
+
+
         this.gameObject.SetActive(false);
+
+        eventManager.OnPlayParticleEffect?.Invoke("Projectile", (Vector2)weaponHit,_particleEffectScale);
+
     }
 
  

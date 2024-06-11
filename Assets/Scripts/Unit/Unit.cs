@@ -11,8 +11,8 @@ public class Unit : MonoBehaviour, IDamagable
     protected HealthSystem _healthSystem;
 
     [SerializeField] protected EventManager _eventManager;
-    [SerializeField] UnitType _unitType;
-    [SerializeField] private int _maxHealth = 100;
+    [SerializeField] protected UnitType _unitType;
+    [SerializeField] protected int _maxHealth = 100;
 
     public UnitType UnitType {  get { return _unitType; } }
 
@@ -33,9 +33,9 @@ public class Unit : MonoBehaviour, IDamagable
         }
     }
 
-    protected void UnitDestroyed()
+    protected virtual void UnitDestroyed()
     {
-        _eventManager.OnUnitDestroyed?.Invoke(UnitType, transform.position);
+        _eventManager.OnPlayParticleEffect?.Invoke(UnitType.ToString(), transform.position, 1);
         Destroy(gameObject);
     }
 
@@ -47,6 +47,11 @@ public class Unit : MonoBehaviour, IDamagable
     public virtual void HealthIncrease(int health)
     {
         _healthSystem.IncreaseHealth(health);
+    }
+
+    public virtual void ResetHealth(int health)
+    {
+        _healthSystem.CurrentHealth = health;
     }
 
     public int GetHealth()

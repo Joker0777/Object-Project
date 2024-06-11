@@ -7,11 +7,11 @@ using UnityEngine;
 public abstract class Weapon : ScriptableObject
 {
     [Header("Weapon Setup")]
-    [SerializeField] protected string _weaponType;
+    [SerializeField] protected string _weaponObjectPoolTag;
     [SerializeField] protected float _weaponCooldown;
     public string WeaponType
     {
-        get { return _weaponType; }
+        get { return _weaponObjectPoolTag; }
     }
 
     public float WeaponCooldown

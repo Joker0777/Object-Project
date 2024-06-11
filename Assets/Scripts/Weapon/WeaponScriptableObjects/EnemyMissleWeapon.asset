@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36a423f504eb5f047aabbc2f71d8b881, type: 3}
   m_Name: EnemyMissleWeapon
   m_EditorClassIdentifier: 
-  _weaponType: EnemyMissleWeapon
+  _weaponObjectPoolTag: EnemyMissleWeapon
   _weaponCooldown: 5
   _accuracy: 1
   _weaponSpeed: 60

@@ -22,31 +22,29 @@ public class AsteroidSpawner : MonoBehaviour
 
     private void Awake()
     {
-
         _asteroidDestroyedEffect = GetComponentsInChildren<ParticleSystem>();
-        _asteroidPool = GetComponentInChildren<AsteroidPool>();
-        
+        _asteroidPool = GetComponentInChildren<AsteroidPool>();       
     }
     void Start()
-    {
-       
+    {      
         InvokeRepeating(nameof(Spawn),this.spawnRate,this.spawnRate);
     }
 
     private void OnEnable()
     {
         _eventManager.OnAstreroidSplitEvent += BreakAsteroid;
-        _eventManager.OnAsteroidDestroyedEffectEvent += AsteroidExplodeEffect;
+      //  _eventManager.OnAsteroidDestroyedEffectEvent += AsteroidExplodeEffect;
 
     }
 
     private void OnDisable() 
     { 
         _eventManager.OnAstreroidSplitEvent -= BreakAsteroid;
-        _eventManager.OnAsteroidDestroyedEffectEvent -= AsteroidExplodeEffect;
+      //  _eventManager.OnAsteroidDestroyedEffectEvent -= AsteroidExplodeEffect;
     }
     private void Spawn()
     {
+  
         for (int i = 0; i < spawnCount; i++)
         {
             Vector2 spawnDirection = Random.insideUnitCircle.normalized * spawnDistance;
@@ -55,7 +53,7 @@ public class AsteroidSpawner : MonoBehaviour
 
             Asteroid asteroid = _asteroidPool.GetMainAsteroid();
 
-             if (asteroid != null)
+            if (asteroid != null)
             {
                 SetUpAsteroid(spawnDirection, spawnPoint, rotation, asteroid);
             }
@@ -67,10 +65,10 @@ public class AsteroidSpawner : MonoBehaviour
         asteroid.transform.rotation = rotation;
         asteroid.transform.position = spawnPoint;
 
-        asteroid._asteroidSize = Random.Range(asteroid._asteroidMinSize, asteroid._asteroidMazSize);
-        asteroid.transform.localScale = Vector3.one * asteroid._asteroidSize;
+        asteroid.AsteroidSize = Random.Range(asteroid.AsteroidMinSize, asteroid.AsteroidMaxSize);
+        asteroid.transform.localScale = Vector3.one * asteroid.AsteroidSize;
 
-        asteroid.ResetHealth = Mathf.FloorToInt(Mathf.Lerp(5, 15, ((asteroid._asteroidSize - asteroid._asteroidMinSize) / (asteroid._asteroidMazSize - asteroid._asteroidMinSize))));
+        asteroid.ResetHealth(Mathf.FloorToInt(Mathf.Lerp(5, 15, ((asteroid.AsteroidSize - asteroid.AsteroidMinSize) / (asteroid.AsteroidSize - asteroid.AsteroidMinSize)))));
 
         asteroid.SetTrajectory(rotation * -spawnDirection);
     }
@@ -78,57 +76,18 @@ public class AsteroidSpawner : MonoBehaviour
 
     private void BreakAsteroid(float size, Asteroid mainAsteroid)
     {
- 
-            Asteroid[] brokenAsteroids = _asteroidPool.GetBrokenAsteroid(mainAsteroid);
+        Asteroid[] brokenAsteroids = _asteroidPool.GetBrokenAsteroid(mainAsteroid);
 
-            if (brokenAsteroids != null)
+        if (brokenAsteroids != null)
+        {
+            foreach (Asteroid brokenAsteroid in brokenAsteroids)
             {
-                foreach (Asteroid brokenAsteroid in brokenAsteroids)
-                {
-                    brokenAsteroid.transform.localScale = Vector3.one * mainAsteroid._asteroidSize;
-                    brokenAsteroid._asteroidSize = size * .5f;
-                    brokenAsteroid.transform.position = mainAsteroid.transform.position;
-                    brokenAsteroid.transform.rotation = mainAsteroid.transform.rotation;
-                    brokenAsteroid.SetTrajectory(Random.insideUnitCircle.normalized);
-                }
-            }     
-    }
-
-    private void AsteroidExplodeEffect(Vector2 pos, float size)
-    {
-
-        
-       // if (_explosionPrefab != null)
-       // {
-        //    GameObject particleEffect = Instantiate(_explosionPrefab, pos, Quaternion.identity);
-
-       //     ParticleSystem[] particleSystem = particleEffect.GetComponents<ParticleSystem>();
-        //    if (particleSystem != null)
-       //     {
-          //      foreach (var particleSystems in _asteroidDestroyedEffect)
-            //    {
-            //        float scaleFactor = Mathf.Lerp(0.1f, 0.2f, (size - 0.5f) / 1f);
-          //          var main = particleSystems.main;
-           //         main.startSize = scaleFactor;
-
-          //          particleSystems.transform.position = pos;
-           ///         particleSystems.Play();
-             //  }
-          // }
-        //   Destroy(particleEffect, 2f);
-        }
-
-    
-
-
-       // foreach (var particleSystem in _asteroidDestroyedEffect)
-      //  {
-        //    float scaleFactor = Mathf.Lerp(0.1f, 0.2f, (size - 0.5f) / 1f);
-         //   var main = particleSystem.main;
-         //   main.startSize = scaleFactor;
-
-        //    particleSystem.transform.position = pos;
-         //   particleSystem.Play();
-       // }
-    
+                brokenAsteroid.transform.localScale = Vector3.one * mainAsteroid.AsteroidSize;
+                brokenAsteroid.AsteroidSize = size * .5f;
+                brokenAsteroid.transform.position = mainAsteroid.transform.position;
+                brokenAsteroid.transform.rotation = mainAsteroid.transform.rotation;
+                brokenAsteroid.SetTrajectory(Random.insideUnitCircle.normalized);
+            }
+        }     
+    } 
 }

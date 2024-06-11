@@ -12,5 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1d0b91d2ed403141bd27d6db10c25cd, type: 3}
   m_Name: NukeWeapon
   m_EditorClassIdentifier: 
-  _weaponType: ExplosiveWeapon
+  _weaponObjectPoolTag: ExplosiveWeapon
   _weaponCooldown: 5
+  _eventManager: {fileID: 0}
+  _damageLayers: []
+  _explosionRadius: 5
+  _explosiveDamage: 80
+  _explosionForce: 100

@@ -8,47 +8,28 @@ using System;
 using Random = UnityEngine.Random;
 
 
-public class Asteroid : MonoBehaviour, IDamagable
+public class Asteroid : Unit
 {
     private Rigidbody2D _rigidbody;
 
     private Coroutine asteroidDestroyed;
 
-    //[SerializeField] private float _asteroidSize = 1.0f;
-
-    public float _asteroidSize = 1.0f;
-
-    //[SerializeField] private float _asteroidMinSize = .5f;
-
-    public float _asteroidMinSize = .5f;
-
-    //[SerializeField] private float _asteroidMazSize = 1.5f;
-
-    public float _asteroidMazSize = 1.5f;
-
+    [SerializeField] private float _asteroidSize = 1.0f;
+    [SerializeField] private float _asteroidMinSize = .5f;
+    [SerializeField] private float _asteroidMaxSize = 1.5f;
     [SerializeField] private float _asteroidSpeed = 10f;
-
     [SerializeField] private float _torqueForce = 10f;
-
-    public float maxLife;
-
-    private HealthSystem _healthSystem;
-    public int _startingHealth = 20;
-
-    [SerializeField] EventManager _eventManager;
     [SerializeField] string _asteroidID;
 
-    public int ResetHealth
-    {
-        set 
-        { 
-            _startingHealth = value;
-            _healthSystem.CurrentHealth = _startingHealth; 
-            _healthSystem.MaxHealth = _startingHealth;
-        }
-        get { return _startingHealth; }
-    }
+    [SerializeField] private float _maxLifeTime = 15f;
+    [SerializeField] private int _startingHealth = 20;
+
+
+
     public string AsteroidID { get { return _asteroidID; } }
+    public float AsteroidSize { get { return _asteroidSize; } set { _asteroidSize = value;  } }
+    public float AsteroidMinSize { get {  return _asteroidMinSize; } }
+    public float AsteroidMaxSize { get { return _asteroidMaxSize;  } }
 
     private void Awake()
     {
@@ -56,24 +37,10 @@ public class Asteroid : MonoBehaviour, IDamagable
         _healthSystem = new HealthSystem();
     }
 
-    protected virtual void Start()
-    {
-        _healthSystem.CurrentHealth = _startingHealth;
-        _healthSystem.MaxHealth = _startingHealth;
-    }
-
-    private void Update()
-    {
-        if (_healthSystem.IsDestroyed)
-        {
-            AsteroidDestroyed();
-        }
-    }
-
     private void OnEnable()
     {
         _healthSystem.IsDestroyed = false;
-        _healthSystem.CurrentHealth = ResetHealth;
+        ResetHealth(_healthSystem.MaxHealth);
 
         asteroidDestroyed = StartCoroutine(DeactivateAsteroid());
     }
@@ -90,7 +57,7 @@ public class Asteroid : MonoBehaviour, IDamagable
 
     IEnumerator DeactivateAsteroid()
     {
-        yield return new WaitForSeconds(maxLife);
+        yield return new WaitForSeconds(_maxLifeTime);
 
         gameObject.SetActive(false);
     }
@@ -106,21 +73,20 @@ public class Asteroid : MonoBehaviour, IDamagable
         gameObject.SetActive(false);
     }
 
-    public virtual void DamageTaken(int damage)
-    {
-        _healthSystem.DecreaseHealth(damage);
-    }
-
-    protected virtual void AsteroidDestroyed()
+    protected override void UnitDestroyed()
     {
         if ((this._asteroidSize * .5f) >= _asteroidMinSize)
         {
           
             _eventManager.OnAstreroidSplitEvent?.Invoke(_asteroidSize, this);
+            _eventManager.OnPlayParticleEffect?.Invoke("AsteroidBreak", transform.position, _asteroidSize);
             gameObject.SetActive(false);
         }
+        else
+        {
+            _eventManager.OnPlayParticleEffect?.Invoke("Asteroid", transform.position, _asteroidSize);
+        }
 
-        _eventManager.OnAsteroidDestroyedEffectEvent?.Invoke(transform.position, _asteroidSize);
         gameObject.SetActive(false);
     }
 }

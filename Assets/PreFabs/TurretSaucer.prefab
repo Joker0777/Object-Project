@@ -392,7 +392,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _eventManager: {fileID: 11400000, guid: 415665ee65827384bac5c210591b82dd, type: 2}
-  _unitType: 3
+  _unitType: 1
   _maxHealth: 100
 --- !u!58 &2064701297358313782
 CircleCollider2D:
@@ -446,7 +446,6 @@ MonoBehaviour:
   _playerAttackRange: 7
   obsticleAvoidanceRange: 4
   angleThresholdWeapon1: 0
-  angleThresholdWeapon2: 0
   ignoreObsticles:
     serializedVersion: 2
     m_Bits: 256

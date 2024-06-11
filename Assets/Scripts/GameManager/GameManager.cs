@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
   //  [SerializeField] PickupSpawner _pickUpSpawner;
 
     [SerializeField] EventManager _eventManager;
+    [SerializeField] ScoreManager _scoreManager;
 
   //  private List<GameObject> _enemyUnits;
 
@@ -49,7 +50,8 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        _eventManager.OnUnitDestroyed += UnitDestroyed;    
+        _eventManager.OnUnitDestroyed += UnitDestroyed;
+       
     }
 
     private void OnDisable()

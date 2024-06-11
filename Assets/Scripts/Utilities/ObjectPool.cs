@@ -30,6 +30,7 @@ public class ObjectPool<T> where T : MonoBehaviour
             if (!obj.gameObject.activeInHierarchy)
             {               
                 obj.gameObject.SetActive(true);
+                Debug.Log("In  object pool get object. game object is "+ obj.enabled);
                 return obj;
             }
         }
