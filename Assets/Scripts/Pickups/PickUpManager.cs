@@ -11,6 +11,7 @@ public class PickUpManager : MonoBehaviour
 
     [SerializeField] private PickupSpawner _pickupSpawner;
     [SerializeField] private Unit _playerUnit;
+    [SerializeField] private ScoreManager _scoreManager;
 
     //weapon pickups   
     [SerializeField]private Weapon _laserWeapon;
@@ -32,19 +33,23 @@ public class PickUpManager : MonoBehaviour
     //player systems references
     private PlayerWeaponSystem playerWeaponSystem;
     private MovmentSystem movmentSystem;
-  
+
+    private EventManager _eventManager;
+
 
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+          //  DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
+
+        _eventManager = EventManager.Instance;
     }
 
     private void Start()
@@ -54,9 +59,20 @@ public class PickUpManager : MonoBehaviour
         playerWeaponSystem = _playerUnit.GetComponentInChildren<PlayerWeaponSystem>();
         movmentSystem = _playerUnit.GetComponentInChildren<MovmentSystem>();
 
-        _playerUnit.EventManager.OnUIChange?.Invoke(UIElementType.PickUpTimer, "0");
-        _playerUnit.EventManager.OnUIChange?.Invoke(UIElementType.pickUp, "EmptyPowerUp");
+        _eventManager.OnUIChange?.Invoke(UIElementType.PickUpTimer, "0");
+        _eventManager.OnUIChange?.Invoke(UIElementType.pickUp, "EmptyPowerUp");
 
+    }
+
+    private void OnEnable()
+    {
+        _eventManager.OnPlayerRespawn += ResetPlayer;
+
+    }
+
+    private void OnDisable()
+    {
+        _eventManager.OnPlayerRespawn -= ResetPlayer;
     }
 
     private void Update()
@@ -65,26 +81,29 @@ public class PickUpManager : MonoBehaviour
         {
             _PowerUpTimer.UpdateTimerBasic(Time.deltaTime);
 
-            _playerUnit.EventManager.OnUIChange?.Invoke(UIElementType.PickUpTimer, Mathf.CeilToInt(_PowerUpTimer.TimeRemaining).ToString());
-            _playerUnit.EventManager.OnUIChange?.Invoke(UIElementType.pickUp,_currentPowerUpPickUp.ToString());
-
-            Debug.Log(_currentPowerUpPickUp.ToString());
+            _eventManager.OnUIChange?.Invoke(UIElementType.PickUpTimer, Mathf.CeilToInt(_PowerUpTimer.TimeRemaining).ToString());
+            _eventManager.OnUIChange?.Invoke(UIElementType.pickUp,_currentPowerUpPickUp.ToString());
 
             if (!_PowerUpTimer.IsRunningBasic())
             {
                 _powerUpTimerRunning = false;
                 _currentPowerUpPickUp.DeactivatePowerUp(_playerUnit);
-                _playerUnit.EventManager.OnUIChange?.Invoke(UIElementType.PickUpTimer, "0");
-                _playerUnit.EventManager.OnUIChange?.Invoke(UIElementType.pickUp, "EmptyPowerUp");
+                _eventManager.OnUIChange?.Invoke(UIElementType.PickUpTimer, "0");
+                _eventManager.OnUIChange?.Invoke(UIElementType.pickUp, "EmptyPowerUp");
             }
         }
+       
     }
+
+    
 
     public void CollectObject(Unit unit, PickupType pickupType)
     {
         _playerUnit = unit;
 
         if (_playerUnit == null) return;
+        Debug.Log("Current pickup " + pickupType.ToString());
+        _eventManager.OnScoreIncrease?.Invoke("Pickup");
     
         switch (pickupType)
         {
@@ -158,6 +177,7 @@ public class PickUpManager : MonoBehaviour
         
         _PowerUpTimer.StartTimerBasic();
         _powerUpTimerRunning = true;
+        _eventManager.OnPlaySoundEffect?.Invoke("PowerUpEffect", transform.position);
     }
 
     public void DestoyAllPickUps()
@@ -176,4 +196,14 @@ public class PickUpManager : MonoBehaviour
             spawnedPickUps.Clear();
         }
     }
+
+    private void ResetPlayer(Unit player)
+    {
+        _playerUnit = player;
+
+        playerWeaponSystem = _playerUnit.GetComponentInChildren<PlayerWeaponSystem>();
+        movmentSystem = _playerUnit.GetComponentInChildren<MovmentSystem>();
+    }
+           
+    
 }

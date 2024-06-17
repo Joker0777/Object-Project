@@ -11,5 +11,7 @@ public enum UIElementType
     pickUp,
     Score,
     WaveEnemies,
-    Lives
+    Lives,
+    InvulnerableCountdown
+
 }

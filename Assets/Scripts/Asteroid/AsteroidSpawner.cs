@@ -14,7 +14,8 @@ public class AsteroidSpawner : MonoBehaviour
     [SerializeField] float spawnDistance = 15f;
     [SerializeField] float spawnAngle = 15f;
 
-    [SerializeField] EventManager _eventManager;
+    // [SerializeField] EventManager _eventManager;
+    private EventManager _eventManager;
 
     [SerializeField] GameObject _explosionPrefab;
     private ParticleSystem[] _asteroidDestroyedEffect;
@@ -23,7 +24,8 @@ public class AsteroidSpawner : MonoBehaviour
     private void Awake()
     {
         _asteroidDestroyedEffect = GetComponentsInChildren<ParticleSystem>();
-        _asteroidPool = GetComponentInChildren<AsteroidPool>();       
+        _asteroidPool = GetComponentInChildren<AsteroidPool>();
+        _eventManager = EventManager.Instance;
     }
     void Start()
     {      

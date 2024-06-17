@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1096188933126353650}
   - component: {fileID: -4766836768589086354}
   - component: {fileID: 5858943815870521174}
+  - component: {fileID: -8466403016017471266}
   m_Layer: 7
   m_Name: MissleProjectile
   m_TagString: Untagged
@@ -100,9 +101,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e916ecd9f0402b4eaff3a6070ef048b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventManager: {fileID: 11400000, guid: 415665ee65827384bac5c210591b82dd, type: 2}
   _projectileTimerLength: 15
   _particleEffectScale: 0.6
+  _damageLayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  _audioClipTag: MissleWeaponHitEffect
 --- !u!61 &1096188933126353650
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -196,3 +200,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-8466403016017471266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832804171966277968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97491eccfbe8a3e4ba558b993709f7c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _thrusterParticleEffectTag: MissleThruster
+  _thrusterParticleScale: 0.1

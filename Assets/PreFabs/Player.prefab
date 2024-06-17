@@ -180,7 +180,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 4716f6820ab8feb449e7d8286e5de37c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -264,7 +264,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 3079a0e4a62da9c4eb8d8cd84bf04c6a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -348,7 +348,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 48a559b9f6f5d9c4ab7cbc23e3fe59bf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -528,6 +528,10 @@ MonoBehaviour:
   _endTransparency: 1
   _fadeDuration: 2
   _shieldDamage: 20
+  _damageLayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  _targetTag: Enemy
 --- !u!1 &6812443731148319198
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,7 +635,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 682c993d47efe4849be4dc1ec8148abb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -867,7 +871,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_Sprite: {fileID: -1592292455, guid: a3c96e8a993c1574ba24b28235a9ab2c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -891,7 +895,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97491eccfbe8a3e4ba558b993709f7c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _eventManager: {fileID: 11400000, guid: 415665ee65827384bac5c210591b82dd, type: 2}
+  _thrusterParticleEffectTag: ThrusterTrail
+  _thrusterParticleScale: 0.05
 --- !u!1 &7877602149197805279
 GameObject:
   m_ObjectHideFlags: 0
@@ -990,9 +995,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a330da3b3df6c49a2415c7cd147254, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _eventManager: {fileID: 11400000, guid: 415665ee65827384bac5c210591b82dd, type: 2}
   _unitType: 0
   _maxHealth: 100
+  __impactDamage: 10
+  _particleEffectTag: ShipHit
+  _soundEffectTag: 
 --- !u!60 &7615261543524502447
 PolygonCollider2D:
   m_ObjectHideFlags: 0

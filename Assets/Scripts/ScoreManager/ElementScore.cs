@@ -7,8 +7,8 @@ using UnityEngine;
 public class ElementScore : ScriptableObject
 {
     [SerializeField] private int _scoreAmount;
-    [SerializeField] private string _scoreElementTypeTag;
+    [SerializeField] private string _elementType;
 
     public int ScoreAmount {  get { return _scoreAmount; } }
-    public string ScoreElementTypeTag { get { return _scoreElementTypeTag; } }
+    public string ScoreElementTypeTag { get { return _elementType; } }
 }

@@ -9,10 +9,9 @@ public class ObjectPool<T> where T : MonoBehaviour
     private int _poolSize;
     private string _objectTag;
 
-    public string ObjectTag {  get { return _objectTag; } }
-
+    public string ObjectTag { get { return _objectTag; } }
     public int CurrentPoolSize { get { return _objectPool.Count; } }
-    
+
     public ObjectPool(T obj, int poolSize, Transform parentTransform, string tag)
     {
         _object = obj;
@@ -23,20 +22,19 @@ public class ObjectPool<T> where T : MonoBehaviour
         CreatePool();
     }
 
-      public T GetObject() 
-      {
+    public T GetObject()
+    {
         foreach (T obj in _objectPool)
         {
             if (!obj.gameObject.activeInHierarchy)
-            {               
+            {
                 obj.gameObject.SetActive(true);
-                Debug.Log("In  object pool get object. game object is "+ obj.enabled);
                 return obj;
             }
         }
-          T newObject = CreateObject(true);
-          return newObject;
-      }
+        T newObject = CreateObject(true);
+        return newObject;
+    }
 
     public void ReturnObject(T obj)
     {
@@ -51,7 +49,19 @@ public class ObjectPool<T> where T : MonoBehaviour
         }
     }
 
-    private void CreatePool()
+    public void Clear()
+    {
+        foreach (T obj in _objectPool)
+        {
+            if (obj != null)
+            {
+                Object.Destroy(obj.gameObject);
+            }
+        }
+        _objectPool.Clear();
+    }
+
+    public void CreatePool()
     {
         _objectPool = new List<T>();
 
@@ -65,13 +75,8 @@ public class ObjectPool<T> where T : MonoBehaviour
     {
         T nextObject = Object.Instantiate(_object, _parentTransform);
         nextObject.gameObject.SetActive(true);
-   
         _objectPool.Add(nextObject);
         nextObject.gameObject.SetActive(isActive);
-
         return nextObject;
     }
-
-
-
 }

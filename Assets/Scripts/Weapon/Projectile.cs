@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] EventManager eventManager;
     [SerializeField] float _projectileTimerLength = 6f;
     [SerializeField] float _particleEffectScale = 1f;
+    [SerializeField] LayerMask _damageLayer;
+    [SerializeField] string _audioClipTag;
 
     protected float _projectileSpeed;
     protected int _projectileDamage;
     protected string _targetTag;
+    private EventManager _eventManager;
 
     private Timer _projectileTimer;
     private bool _fired;
@@ -21,7 +23,7 @@ public class Projectile : MonoBehaviour
     private void Awake()
     {
         _projectileTimer = new Timer(_projectileTimerLength);
-
+        _eventManager = EventManager.Instance;
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -52,17 +54,17 @@ public class Projectile : MonoBehaviour
     {
         Vector3 weaponHit = collision.contacts[0].point;
         
-        if (collision.gameObject.CompareTag(_targetTag) || collision.gameObject.CompareTag("Asteroid"))
+        if (collision.gameObject.CompareTag(_targetTag) || 1 << ((collision.gameObject.layer) & _damageLayer) != 0)
         {
-            collision.collider.attachedRigidbody.GetComponent<IDamagable>().DamageTaken(_projectileDamage);
+            collision.collider?.attachedRigidbody?.GetComponent<IDamagable>().DamageTaken(_projectileDamage);
 
         }
 
 
         this.gameObject.SetActive(false);
 
-        eventManager.OnPlayParticleEffect?.Invoke("Projectile", (Vector2)weaponHit,_particleEffectScale);
-
+        _eventManager.OnPlayParticleEffect?.Invoke("Projectile", (Vector2)weaponHit,_particleEffectScale);
+        _eventManager.OnPlaySoundEffect?.Invoke(_audioClipTag, (Vector2)weaponHit);
     }
 
  

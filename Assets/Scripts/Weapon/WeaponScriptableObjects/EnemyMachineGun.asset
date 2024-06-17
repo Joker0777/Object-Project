@@ -16,7 +16,7 @@ MonoBehaviour:
   _weaponCooldown: 0.1
   _accuracy: 0.472
   _weaponSpeed: 60
-  _weaponDamage: 1
+  _weaponDamage: 2
   _targetTag: Player
   _projectilePrefab: {fileID: 1368470505411515553, guid: 6d0a27de8e69b4c48a080790a2c206fd, type: 3}
   _poolSize: 10

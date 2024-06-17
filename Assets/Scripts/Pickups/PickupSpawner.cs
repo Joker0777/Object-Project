@@ -5,17 +5,24 @@ using UnityEngine;
 public class PickupSpawner : MonoBehaviour
 {
 
-    [SerializeField] EventManager eventManager;
+
 
     [SerializeField] PickUp[] pickUps;
 
     public List<GameObject> spawnedPickUps;
+
+    private EventManager eventManager;
 
     public List<GameObject> SpawnedPickUps
     {
         get { return spawnedPickUps; }
     }
 
+    private void Awake()
+    {
+        eventManager = EventManager.Instance;
+    }
+ 
 
     private void OnEnable()
     {
@@ -29,7 +36,7 @@ public class PickupSpawner : MonoBehaviour
 
     private void SpawnPickup(UnitType unitType, Vector3 position)
     {
-        if(unitType != UnitType.Player) 
+        if(unitType == UnitType.Enemy) 
         {
             int randomIndex = Random.Range(0, pickUps.Length);
             PickUp currentPickup;

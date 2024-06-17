@@ -12,7 +12,7 @@ public class IncreaseFireRatePowerUp : PowerUpPickUp
 
     private PlayerWeaponSystem weaponSystem;
 
-    public IncreaseFireRatePowerUp(float fireRateIncreaseFactor = 5f) 
+    public IncreaseFireRatePowerUp(float fireRateIncreaseFactor = 2f) 
     { 
         _fireRateIncreaseFactor = fireRateIncreaseFactor; 
     }

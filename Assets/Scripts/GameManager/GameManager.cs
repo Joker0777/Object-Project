@@ -6,38 +6,54 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     
-  //  [SerializeField] private Unit[] enemyUnits;
+    private EventManager _eventManager;
+   // [SerializeField] ScoreManager _scoreManager;
+    [SerializeField] Unit _player;
 
-  //  [SerializeField] private float _spawnDelay = 5f;
-
-  //  [SerializeField] PickupSpawner _pickUpSpawner;
-
-    [SerializeField] EventManager _eventManager;
-    [SerializeField] ScoreManager _scoreManager;
-
-  //  private List<GameObject> _enemyUnits;
+    [SerializeField] private GameObject _missionCompleteScreen;
+    [SerializeField] private GameObject _missionFailScreen;
 
 
     [SerializeField] private List<EnemyWave> _enemyWaves;
     [SerializeField] private float _nextWaveDelay;
     [SerializeField] private float _spawnDistance = 8f;
+    [SerializeField] private int _lives = 3;
+    [SerializeField] private float _respawnAvoidCollisonTime = 3f;
+    [SerializeField] private float _respawnTime = 2f;
 
+    private Timer _invulnerableTimer;
     private int _totalWaves;
     private int _currentWave;
     private List<GameObject> _currentWaveUnits = new List<GameObject>();
+    private Unit _currentPlayer;
+
+    public int Lives 
+    {  
+        get 
+        { 
+            return _lives; 
+        } 
+        set 
+        {
+            _lives = value;
+            _eventManager.OnUIChange?.Invoke(UIElementType.Lives,Lives.ToString());
+        }
+    }
 
 
     private void Awake()
     {
+       _eventManager = EventManager.Instance;
         if(Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+           // DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
+
     }
 
     private void Start()
@@ -46,6 +62,9 @@ public class GameManager : MonoBehaviour
  
         _totalWaves = _enemyWaves.Count;
 
+        _invulnerableTimer = new Timer(_respawnAvoidCollisonTime);
+        _eventManager.OnUIChange?.Invoke(UIElementType.InvulnerableCountdown, "0");
+        _eventManager.OnUIChange?.Invoke(UIElementType.Lives, Lives.ToString());
     }
 
     private void OnEnable()
@@ -58,46 +77,64 @@ public class GameManager : MonoBehaviour
     {
         _eventManager.OnUnitDestroyed -= UnitDestroyed;
     }
+    private void Update()
+    {
+        if (_invulnerableTimer.IsRunningBasic())
+        {
+            _invulnerableTimer.UpdateTimerBasic(Time.deltaTime);
+
+            _eventManager.OnUIChange?.Invoke(UIElementType.InvulnerableCountdown, Mathf.CeilToInt(_invulnerableTimer.TimeRemaining).ToString());
+        }
+    }
 
     public void UnitDestroyed(UnitType unit, Vector3 position)
     {
-        if (unit != UnitType.Player)
+        if (unit == UnitType.Player)
         {
-            
+
+            Lives--;
+            if (Lives == 0)
+            {
+                GameOver();
+            }
+            else
+            {
+                StartCoroutine(RespawnWithDelay(position, _respawnTime));
+                Debug.Log("After coroutine start");
+            }
+        }
+        else
+        {
+            _eventManager.OnScoreIncrease?.Invoke(unit.ToString());
+            Debug.Log(unit.ToString());
         }
     }
 
     private void SpawnEnemy(Unit unit)
     {
-        Debug.Log("In spawn enemy");
 
             Vector2 randomPosition = Random.insideUnitCircle.normalized * _spawnDistance;
 
             Vector2 spawnPoint = new Vector2(transform.position.x, transform.position.y) + randomPosition;
 
-          //  int enemyIndex = Random.Range(0, enemyUnits.Length);
-
             Unit newShip = Instantiate(unit, spawnPoint, Quaternion.identity);
-        _currentWaveUnits.Add(newShip.gameObject);
-
-        //  _enemyUnits.Add(newShip.gameObject);       
+            _currentWaveUnits.Add(newShip.gameObject);    
     }
     private IEnumerator StartNextWave()
-    {
-        Debug.Log("In start next wave " + _currentWave);
-        
+    {      
         while (_currentWave < _enemyWaves.Count)
         {
             yield return StartCoroutine(SpawnEnemyWave(_enemyWaves[_currentWave]));
             _currentWave++;
             yield return new WaitForSeconds(_nextWaveDelay);
-        }     
+        }
+        _missionCompleteScreen.SetActive(true);
+        _player.gameObject.SetActive(false);
+        _eventManager.OnGameSceneEnd?.Invoke();
     }
 
     IEnumerator SpawnEnemyWave(EnemyWave wave)
-    {
-        Debug.Log("In spawn enemy wave");
-        
+    {      
        List<Unit> newWave = wave.GetEnemyUnits();
         _eventManager.OnUIChange.Invoke(UIElementType.WaveEnemies, newWave.Count.ToString());
 
@@ -107,7 +144,6 @@ public class GameManager : MonoBehaviour
             if (nextUnit != null)
             {
                 SpawnEnemy(nextUnit);
-               // yield return new WaitForSeconds(wave.SpawnInterval);
             }
             newWave.RemoveAt(0);
         }
@@ -116,14 +152,44 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
-
     }
 
     private bool CurrentWaveIsDestroyed()
     {
-
         _currentWaveUnits.RemoveAll(unit => unit == null);
         _eventManager.OnUIChange.Invoke(UIElementType.WaveEnemies, _currentWaveUnits.Count.ToString());
         return _currentWaveUnits.Count == 0;
+    }
+  
+    private void RespawnPlayer(Vector3 pos)
+    {
+        if (Lives > 0)
+        {
+            _currentPlayer = Instantiate(_player, pos, Quaternion.identity);
+            Collider2D collider2D = _currentPlayer.GetComponent<Collider2D>();
+            Debug.Log(_currentPlayer);
+            collider2D.enabled = false;
+            StartCoroutine(AvoidCollison(collider2D));
+            _invulnerableTimer.StartTimerBasic();
+            _eventManager.OnPlayerRespawn?.Invoke(_currentPlayer);
+        }
+
+    }
+    private void GameOver()
+    {
+        _missionFailScreen.SetActive(true);
+        _eventManager.OnGameSceneEnd?.Invoke();
+    }
+
+    private IEnumerator AvoidCollison(Collider2D playerCollider)
+    {
+        yield return new WaitForSeconds(_respawnAvoidCollisonTime);
+        playerCollider.enabled = true;
+        _eventManager.OnUIChange?.Invoke(UIElementType.InvulnerableCountdown, "0");
+    }
+    IEnumerator RespawnWithDelay(Vector3 pos, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        RespawnPlayer(pos);
     }
 }

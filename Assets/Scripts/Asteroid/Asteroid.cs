@@ -20,6 +20,7 @@ public class Asteroid : Unit
     [SerializeField] private float _asteroidSpeed = 10f;
     [SerializeField] private float _torqueForce = 10f;
     [SerializeField] string _asteroidID;
+    [SerializeField] int _asteroidHitDamage;
 
     [SerializeField] private float _maxLifeTime = 15f;
     [SerializeField] private int _startingHealth = 20;
@@ -31,8 +32,9 @@ public class Asteroid : Unit
     public float AsteroidMinSize { get {  return _asteroidMinSize; } }
     public float AsteroidMaxSize { get { return _asteroidMaxSize;  } }
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _rigidbody = GetComponent<Rigidbody2D>();
         _healthSystem = new HealthSystem();
     }
@@ -86,7 +88,18 @@ public class Asteroid : Unit
         {
             _eventManager.OnPlayParticleEffect?.Invoke("Asteroid", transform.position, _asteroidSize);
         }
+        _eventManager.OnPlaySoundEffect?.Invoke("AsteroidEffect", transform.position);
+        _eventManager.OnUnitDestroyed?.Invoke(UnitType, transform.position);
 
         gameObject.SetActive(false);
     }
+   // protected virtual void OnCollisionEnter2D(Collision2D collision)
+  //  {
+    //    Vector3 asteroidHit = collision.contacts[0].point;
+
+   //     collision.collider?.attachedRigidbody?.GetComponent<IDamagable>()?.DamageTaken(_asteroidHitDamage);
+       
+    //    _eventManager.OnPlayParticleEffect?.Invoke("AsteroidHit", (Vector2)asteroidHit, 1f);
+   //     _eventManager.OnPlaySoundEffect?.Invoke("AsteroidHitEffect", (Vector2)asteroidHit);
+   // }
 }

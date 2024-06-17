@@ -9,10 +9,11 @@ public class ExplosiveWeapon : Weapon
 {
     private string _targetTag;
 
-    [SerializeField] private LayerMask[] _damageLayers;
+    [SerializeField] private LayerMask _damageLayer;
     [SerializeField] private float _explosionRadius = 5f;
-    [SerializeField] private int _explosiveDamage = 80;
+    [SerializeField] private int _explosiveDamage = 100;
     [SerializeField] private float _explosionForce = 100f;
+    [SerializeField] EventManager _eventManager;
 
   
     public override void ShootWeapon(Vector2 position, Vector2 direction, Quaternion rotation, string targetTag, Transform parent)
@@ -33,7 +34,7 @@ public class ExplosiveWeapon : Weapon
                 collider.attachedRigidbody?.GetComponent<IDamagable>()?.DamageTaken(_explosiveDamage);
             }
         }
-       // ParticleSystemManager.Instance.GetParticleEffect();
+        _eventManager.OnPlayParticleEffect("Explosion", position, _explosionRadius);
         
     }
 
@@ -44,14 +45,7 @@ public class ExplosiveWeapon : Weapon
 
     private bool IsInDamageLayers(Collider2D collider)
     {
-        foreach (var layer in _damageLayers)
-        {
-            if (collider.gameObject.layer == layer)
-            {
-                return true;
-            }
-        }
-        return false;
+        return (_damageLayer.value & (1 << collider.gameObject.layer)) != 0;
     }
 
 }

@@ -241,7 +241,7 @@ public class EnemyBehaviourSystem : UnitSystems
             avoidanceOffset += (awayFromObsticle + sideAvoidance)  / Vector2.Distance(transform.position, obsticles.transform.position);
        
         }
-        Debug.Log(avoidanceOffset.ToString());
+     
 
         return avoidanceOffset.normalized;          
     }

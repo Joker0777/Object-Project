@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ObjectPoolSystem<T> where T : MonoBehaviour
 {
@@ -23,6 +24,25 @@ public class ObjectPoolSystem<T> where T : MonoBehaviour
     public ObjectPoolSystem()
     {
         _objectPools = new Dictionary<string, ObjectPool<T>>();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        ResetObjectPools();
+    }
+
+    private void ResetObjectPools()
+    {
+        foreach (var objectPool in _objectPools.Values)
+        {
+            objectPool.Clear();
+        }
+
+        foreach (var objectPool in _objectPools.Values)
+        {
+            objectPool.CreatePool();
+        }
     }
 
     public void AddPool(int size, string name, T obj, Transform parent)
@@ -31,7 +51,6 @@ public class ObjectPoolSystem<T> where T : MonoBehaviour
         {
             _objectPools.Add(name, new ObjectPool<T>(obj, size, parent, name));
         }
-        return;
     }
 
     public void RemovePool(string name)
@@ -40,19 +59,15 @@ public class ObjectPoolSystem<T> where T : MonoBehaviour
         {
             _objectPools.Remove(name);
         }
-        return;
     }
 
     public T GetObject(string type)
     {
-        T obj = null;
-
         if (_objectPools.TryGetValue(type, out ObjectPool<T> value))
         {
-            obj = value.GetObject();
+            return value.GetObject();
         }
-
-        return obj;
+        return null;
     }
 
     public void DeactivateObjects(string type)
@@ -60,6 +75,14 @@ public class ObjectPoolSystem<T> where T : MonoBehaviour
         if (_objectPools.TryGetValue(type, out ObjectPool<T> value))
         {
             value.DeactivateAll();
+        }
+    }
+
+    public void ReturnObject(string type, T obj)
+    {
+        if (_objectPools.TryGetValue(type, out ObjectPool<T> pool))
+        {
+            pool.ReturnObject(obj);
         }
     }
 }

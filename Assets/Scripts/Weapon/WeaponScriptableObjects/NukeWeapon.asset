@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponObjectPoolTag: ExplosiveWeapon
   _weaponCooldown: 5
-  _eventManager: {fileID: 0}
-  _damageLayers: []
-  _explosionRadius: 5
-  _explosiveDamage: 80
+  _damageLayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  _explosionRadius: 5.51
+  _explosiveDamage: 100
   _explosionForce: 100
+  _eventManager: {fileID: 11400000, guid: 415665ee65827384bac5c210591b82dd, type: 2}
