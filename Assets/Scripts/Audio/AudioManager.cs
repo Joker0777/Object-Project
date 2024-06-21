@@ -37,8 +37,6 @@ public class AudioManager : MonoBehaviour
     {
         AudioEffect audioEffect = ObjectPoolSystem<AudioEffect>.Instance.GetObject(audioEffectTag);
 
-        Debug.Log("In get audio effect.  tag " +  audioEffectTag);  
-
         if (audioEffect != null)
         {
             audioEffect.PlaySoundEffect(position);

@@ -93,13 +93,4 @@ public class Asteroid : Unit
 
         gameObject.SetActive(false);
     }
-   // protected virtual void OnCollisionEnter2D(Collision2D collision)
-  //  {
-    //    Vector3 asteroidHit = collision.contacts[0].point;
-
-   //     collision.collider?.attachedRigidbody?.GetComponent<IDamagable>()?.DamageTaken(_asteroidHitDamage);
-       
-    //    _eventManager.OnPlayParticleEffect?.Invoke("AsteroidHit", (Vector2)asteroidHit, 1f);
-   //     _eventManager.OnPlaySoundEffect?.Invoke("AsteroidHitEffect", (Vector2)asteroidHit);
-   // }
 }

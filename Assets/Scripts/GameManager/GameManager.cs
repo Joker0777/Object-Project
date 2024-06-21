@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject _missionCompleteScreen;
     [SerializeField] private GameObject _missionFailScreen;
+    [SerializeField] private GameObject _nextWaveWarning;
 
 
     [SerializeField] private List<EnemyWave> _enemyWaves;
@@ -126,7 +127,9 @@ public class GameManager : MonoBehaviour
         {
             yield return StartCoroutine(SpawnEnemyWave(_enemyWaves[_currentWave]));
             _currentWave++;
+            _nextWaveWarning.SetActive(true);
             yield return new WaitForSeconds(_nextWaveDelay);
+            _nextWaveWarning.SetActive(false);
         }
         _missionCompleteScreen.SetActive(true);
         _player.gameObject.SetActive(false);

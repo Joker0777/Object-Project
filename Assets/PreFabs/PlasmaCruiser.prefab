@@ -204,10 +204,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad7a7c2797e46604abd4999eab22b6a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detectRange: 15
+  _detectRange: 25
   _stopRange: 3
-  _playerAttackRange: 12
-  obsticleAvoidanceRange: 3
+  _playerAttackRange: 15
+  obsticleAvoidanceRange: 2
   angleThresholdWeapon1: 0.9
   ignoreObsticles:
     serializedVersion: 2
@@ -259,6 +259,7 @@ MonoBehaviour:
   __impactDamage: 10
   _particleEffectTag: ShipHit
   _soundEffectTag: 
+  _collisionIgnore: 
 --- !u!60 &5524987055308746894
 PolygonCollider2D:
   m_ObjectHideFlags: 0

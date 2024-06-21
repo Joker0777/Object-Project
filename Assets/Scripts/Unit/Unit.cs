@@ -16,6 +16,7 @@ public class Unit : MonoBehaviour, IDamagable
     [SerializeField] protected int __impactDamage = 10;
     [SerializeField] string _particleEffectTag;
     [SerializeField] string _soundEffectTag;
+    [SerializeField] string _collisionIgnore;
 
     public UnitType UnitType {  get { return _unitType; } }
 
@@ -73,9 +74,10 @@ public class Unit : MonoBehaviour, IDamagable
     {
        
         Vector3 hitPoint = collision.contacts[0].point;
-
-        collision.collider?.attachedRigidbody?.GetComponent<IDamagable>()?.DamageTaken(__impactDamage);
-
+        if (!collision.collider.gameObject.CompareTag(_collisionIgnore)) 
+        {
+            collision.collider?.attachedRigidbody?.GetComponent<IDamagable>()?.DamageTaken(__impactDamage);
+        }
 
         _eventManager.OnPlayParticleEffect?.Invoke(_particleEffectTag, (Vector2)hitPoint, 1f);
         _eventManager.OnPlaySoundEffect?.Invoke(_soundEffectTag, (Vector2)hitPoint);

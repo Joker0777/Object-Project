@@ -127,10 +127,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unitType: 2
-  _maxHealth: 20
-  __impactDamage: 40
+  _maxHealth: 40
+  __impactDamage: 20
   _particleEffectTag: AsteroidHit
   _soundEffectTag: AsteroidHitEffect
+  _collisionIgnore: 
   _asteroidSize: 1
   _asteroidMinSize: 0.5
   _asteroidMaxSize: 1.5

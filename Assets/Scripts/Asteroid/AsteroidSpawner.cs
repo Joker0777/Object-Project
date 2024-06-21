@@ -14,7 +14,6 @@ public class AsteroidSpawner : MonoBehaviour
     [SerializeField] float spawnDistance = 15f;
     [SerializeField] float spawnAngle = 15f;
 
-    // [SerializeField] EventManager _eventManager;
     private EventManager _eventManager;
 
     [SerializeField] GameObject _explosionPrefab;
@@ -35,14 +34,11 @@ public class AsteroidSpawner : MonoBehaviour
     private void OnEnable()
     {
         _eventManager.OnAstreroidSplitEvent += BreakAsteroid;
-      //  _eventManager.OnAsteroidDestroyedEffectEvent += AsteroidExplodeEffect;
-
     }
 
     private void OnDisable() 
     { 
         _eventManager.OnAstreroidSplitEvent -= BreakAsteroid;
-      //  _eventManager.OnAsteroidDestroyedEffectEvent -= AsteroidExplodeEffect;
     }
     private void Spawn()
     {
