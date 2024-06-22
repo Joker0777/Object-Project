@@ -598,7 +598,7 @@ MonoBehaviour:
   __impactDamage: 10
   _particleEffectTag: ShipHit
   _soundEffectTag: 
-  _collisionIgnore: 
+  _collisionIgnore: Shield
 --- !u!114 &2934249049385729229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -613,7 +613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _detectRange: 25
   _stopRange: 1
-  _playerAttackRange: 15
+  _playerAttackRange: 20
   obsticleAvoidanceRange: 2
   angleThresholdWeapon1: -1
   ignoreObsticles:

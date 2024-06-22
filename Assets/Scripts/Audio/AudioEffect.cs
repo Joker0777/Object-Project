@@ -23,7 +23,7 @@ public class AudioEffect : MonoBehaviour
     {
         transform.position = position;
 
-        Debug.Log("In Play Sound effect effect tag is " + _audioEffectTag);
+       // Debug.Log("In Play Sound effect effect tag is " + _audioEffectTag);
 
 
         gameObject.SetActive(true);

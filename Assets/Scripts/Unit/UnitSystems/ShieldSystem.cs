@@ -80,7 +80,7 @@ public class ShieldSystem : MonoBehaviour
 
         if (collision.gameObject.CompareTag(_targetTag) || 1 << ((collision.gameObject.layer) & _damageLayer) != 0)
         {
-            collision.collider.attachedRigidbody.GetComponent<IDamagable>().DamageTaken(_shieldDamage);
+            collision.collider?.attachedRigidbody?.GetComponent<IDamagable>().DamageTaken(_shieldDamage);
 
         }
         _eventManager.OnPlayParticleEffect?.Invoke("Shield", (Vector2)shieldHit, .5f);

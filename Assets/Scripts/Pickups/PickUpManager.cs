@@ -127,9 +127,9 @@ public class PickUpManager : MonoBehaviour
                 CollectWeapon(_plasmaWeapon);
                 break;
 
-            case PickupType.ShieldPowerUpPickup:
-                CollectPowerUp(new ShieldPowerUp());
-                break;
+          //  case PickupType.ShieldPowerUpPickup:
+           //     CollectPowerUp(new ShieldPowerUp());
+             //   break;
 
             case PickupType.IncreaseFireRatePickup:
                 CollectPowerUp(new IncreaseFireRatePowerUp());   
@@ -173,7 +173,6 @@ public class PickUpManager : MonoBehaviour
         _currentPowerUpPickUp = powerUpPickUp;
         _currentPowerUpPickUp.ActivatePowerUp(_playerUnit);
 
-     //   Debug.Log(_currentPowerUpPickUp.ToString());
         
         _PowerUpTimer.StartTimerBasic();
         _powerUpTimerRunning = true;

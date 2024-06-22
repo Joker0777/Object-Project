@@ -104,6 +104,9 @@ MonoBehaviour:
   _damageLayer:
     serializedVersion: 2
     m_Bits: 4096
+  _damageIgnore:
+    serializedVersion: 2
+    m_Bits: 512
   _audioClipTag: LaserWeaponHitEffect
 --- !u!61 &1096188933126353650
 BoxCollider2D:

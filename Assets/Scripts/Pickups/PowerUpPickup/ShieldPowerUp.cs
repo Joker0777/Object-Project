@@ -7,6 +7,7 @@ public class ShieldPowerUp : PowerUpPickUp
 
     protected ShieldSystem _shieldSystem;
 
+
     private EventManager _eventManager;
 
     
@@ -15,10 +16,9 @@ public class ShieldPowerUp : PowerUpPickUp
     {     
         if ((_shieldSystem = unit.GetComponentInChildren<ShieldSystem>(true)) == null)
             return;
-
-     
-   
+  
         _shieldSystem.gameObject.SetActive(true);
+
         _shieldSystem.ActivateShield();
     }
 

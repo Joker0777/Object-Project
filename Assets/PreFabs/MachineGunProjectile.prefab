@@ -104,6 +104,7 @@ MonoBehaviour:
   _damageLayer:
     serializedVersion: 2
     m_Bits: 4096
+  _ignoreDamageTag: Shield
   _audioClipTag: MachineGunHitEffect
 --- !u!61 &1096188933126353650
 BoxCollider2D:

@@ -206,7 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _detectRange: 25
   _stopRange: 3
-  _playerAttackRange: 15
+  _playerAttackRange: 20
   obsticleAvoidanceRange: 2
   angleThresholdWeapon1: 0.9
   ignoreObsticles:
@@ -259,7 +259,7 @@ MonoBehaviour:
   __impactDamage: 10
   _particleEffectTag: ShipHit
   _soundEffectTag: 
-  _collisionIgnore: 
+  _collisionIgnore: Shield
 --- !u!60 &5524987055308746894
 PolygonCollider2D:
   m_ObjectHideFlags: 0

@@ -60,4 +60,7 @@ public class EventManager : ScriptableObject
     //Scene/GameEnd
     public Action OnGameSceneEnd;
 
+    //Pause
+    public Action OnPauseGame;
+
 }

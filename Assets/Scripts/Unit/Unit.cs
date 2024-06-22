@@ -82,4 +82,5 @@ public class Unit : MonoBehaviour, IDamagable
         _eventManager.OnPlayParticleEffect?.Invoke(_particleEffectTag, (Vector2)hitPoint, 1f);
         _eventManager.OnPlaySoundEffect?.Invoke(_soundEffectTag, (Vector2)hitPoint);
     }
+
 }

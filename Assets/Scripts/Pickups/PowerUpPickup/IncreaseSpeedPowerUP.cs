@@ -10,7 +10,7 @@ public class IncreaseSpeedPowerUP : PowerUpPickUp
 
     protected MovmentSystem movmentSystem;
 
-    public IncreaseSpeedPowerUP(float speedIncreaseFactor = 1.5f)
+    public IncreaseSpeedPowerUP(float speedIncreaseFactor = 2f)
     {  
         _speedIncreaseFactor = speedIncreaseFactor; 
     }

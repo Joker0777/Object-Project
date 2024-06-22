@@ -127,19 +127,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unitType: 2
-  _maxHealth: 20
+  _maxHealth: 10
   __impactDamage: 5
   _particleEffectTag: AsteroidHit
   _soundEffectTag: AsteroidHitEffect
-  _collisionIgnore: 
+  _collisionIgnore: Shield
   _asteroidSize: 1
   _asteroidMinSize: 0.5
   _asteroidMaxSize: 1.5
   _asteroidSpeed: 0.2
   _torqueForce: 10
   _asteroidID: 
-  _asteroidHitDamage: 0
-  _maxLifeTime: 15
+  _asteroidHitDamage: 5
+  _maxLifeTime: 30
   _startingHealth: 20
 --- !u!60 &8625948063026875414
 PolygonCollider2D:

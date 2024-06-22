@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _missionCompleteScreen;
     [SerializeField] private GameObject _missionFailScreen;
     [SerializeField] private GameObject _nextWaveWarning;
+    [SerializeField] private UIPause _pauseMenu;
 
 
     [SerializeField] private List<EnemyWave> _enemyWaves;
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
     private int _currentWave;
     private List<GameObject> _currentWaveUnits = new List<GameObject>();
     private Unit _currentPlayer;
+    private bool _isPaused;
 
     public int Lives 
     {  
@@ -66,17 +68,24 @@ public class GameManager : MonoBehaviour
         _invulnerableTimer = new Timer(_respawnAvoidCollisonTime);
         _eventManager.OnUIChange?.Invoke(UIElementType.InvulnerableCountdown, "0");
         _eventManager.OnUIChange?.Invoke(UIElementType.Lives, Lives.ToString());
+
+        Time.timeScale = 1f;
+
+        SpawnPlayer( transform.position);
+        
     }
 
     private void OnEnable()
     {
         _eventManager.OnUnitDestroyed += UnitDestroyed;
-       
+        _eventManager.OnPauseGame += PauseGame;
+
     }
 
     private void OnDisable()
     {
         _eventManager.OnUnitDestroyed -= UnitDestroyed;
+        _eventManager.OnPauseGame -= PauseGame;
     }
     private void Update()
     {
@@ -86,6 +95,34 @@ public class GameManager : MonoBehaviour
 
             _eventManager.OnUIChange?.Invoke(UIElementType.InvulnerableCountdown, Mathf.CeilToInt(_invulnerableTimer.TimeRemaining).ToString());
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            _eventManager.OnPauseGame.Invoke();
+        }
+    }
+
+    public void PauseGame()
+    {
+        if (!_isPaused)
+        {
+            _pauseMenu.gameObject.SetActive(true);
+            _currentPlayer.gameObject.SetActive(false);
+            Time.timeScale = 0f;
+            _isPaused = true;
+        }
+        else
+        {
+            ResumeGame();
+        }
+
+    }
+
+    private void ResumeGame()
+    {
+        _pauseMenu.gameObject.SetActive(false);
+        _currentPlayer.gameObject.SetActive(true);
+        Time.timeScale = 1f;
+        _isPaused = false;
     }
 
     public void UnitDestroyed(UnitType unit, Vector3 position)
@@ -164,7 +201,7 @@ public class GameManager : MonoBehaviour
         return _currentWaveUnits.Count == 0;
     }
   
-    private void RespawnPlayer(Vector3 pos)
+    private void SpawnPlayer(Vector3 pos)
     {
         if (Lives > 0)
         {
@@ -193,6 +230,6 @@ public class GameManager : MonoBehaviour
     IEnumerator RespawnWithDelay(Vector3 pos, float delay)
     {
         yield return new WaitForSeconds(delay);
-        RespawnPlayer(pos);
+        SpawnPlayer(pos);
     }
 }

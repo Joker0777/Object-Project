@@ -10,6 +10,7 @@ public abstract class UnitSystems : MonoBehaviour
 
     protected virtual void Awake()
     {
+        _eventManager = EventManager.Instance;
         if (!transform.root.TryGetComponent<Unit>(out unit))
         {
             Debug.Log("Unit not assigned to parent.");
@@ -18,7 +19,7 @@ public abstract class UnitSystems : MonoBehaviour
 
     protected virtual void Start()
     {
-        _eventManager = unit.EventManager;
+
         if (_eventManager == null)
         {
             Debug.LogError("EventManager is not assigned.");

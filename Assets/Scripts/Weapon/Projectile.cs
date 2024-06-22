@@ -54,7 +54,10 @@ public class Projectile : MonoBehaviour
     {
         Vector3 weaponHit = collision.contacts[0].point;
         
-        if (collision.gameObject.CompareTag(_targetTag) || 1 << ((collision.gameObject.layer) & _damageLayer) != 0)
+        Rigidbody2D rb = collision.collider?.attachedRigidbody;
+
+
+        if ((collision.gameObject.CompareTag(_targetTag) || 1 << ((collision.gameObject.layer) & _damageLayer) != 0))
         {
             collision.collider?.attachedRigidbody?.GetComponent<IDamagable>().DamageTaken(_projectileDamage);
 

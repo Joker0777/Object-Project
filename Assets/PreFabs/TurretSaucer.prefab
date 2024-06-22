@@ -396,7 +396,7 @@ MonoBehaviour:
   __impactDamage: 10
   _particleEffectTag: ShipHit
   _soundEffectTag: 
-  _collisionIgnore: 
+  _collisionIgnore: Shield
 --- !u!58 &2064701297358313782
 CircleCollider2D:
   m_ObjectHideFlags: 0
