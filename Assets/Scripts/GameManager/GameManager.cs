@@ -169,7 +169,7 @@ public class GameManager : MonoBehaviour
             _nextWaveWarning.SetActive(false);
         }
         _missionCompleteScreen.SetActive(true);
-        _player.gameObject.SetActive(false);
+        _currentPlayer.gameObject.SetActive(false);
         _eventManager.OnGameSceneEnd?.Invoke();
     }
 

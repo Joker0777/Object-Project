@@ -594,7 +594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unitType: 1
-  _maxHealth: 100
+  _maxHealth: 250
   __impactDamage: 10
   _particleEffectTag: ShipHit
   _soundEffectTag: 
@@ -613,7 +613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _detectRange: 25
   _stopRange: 1
-  _playerAttackRange: 20
+  _attackRange: 7
   obsticleAvoidanceRange: 2
   angleThresholdWeapon1: -1
   ignoreObsticles:

@@ -11,12 +11,9 @@ public class EnemyBehaviourSystem : UnitSystems
     protected IMovable movement;
     private WeaponSystem weapon;
 
-    protected float _attackRange = 3;
-
-
     [SerializeField] protected float _detectRange = 7;
     [SerializeField] protected float _stopRange = 1;
-    [SerializeField] protected float _playerAttackRange = 7;
+    [SerializeField] protected float _attackRange = 7;
     [SerializeField] protected float obsticleAvoidanceRange = 10f;
 
     [SerializeField]float angleThresholdWeapon1 = 0.9f;

@@ -237,7 +237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _detectRange: 25
   _stopRange: 2
-  _playerAttackRange: 12
+  _attackRange: 4
   obsticleAvoidanceRange: 2
   angleThresholdWeapon1: 0.8
   ignoreObsticles:

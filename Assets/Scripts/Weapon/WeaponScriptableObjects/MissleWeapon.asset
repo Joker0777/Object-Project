@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: MissleWeapon
   m_EditorClassIdentifier: 
   _weaponObjectPoolTag: MissleWeapon
-  _weaponCooldown: 1.5
+  _weaponCooldown: 1.7
   _accuracy: 1
   _weaponSpeed: 50
-  _weaponDamage: 60
+  _weaponDamage: 100
   _targetTag: Enemy
   _projectilePrefab: {fileID: 1368470505411515553, guid: 4ef38acb8ec5add49ae300ffef0037b9, type: 3}
   _poolSize: 6
